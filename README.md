@@ -1,2 +1,2 @@
 # Stockroom
-The warehouse robot to automate placing bins them on shelves.
+The warehouse robot to automate placing bins on shelves.
