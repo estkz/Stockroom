@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class Dialog extends JDialog implements ActionListener {
     Voorraad voorraad = new Voorraad();
+
     JTextField index;
     JTextField item;
     JLabel indexLabel;
@@ -61,9 +62,7 @@ public class Dialog extends JDialog implements ActionListener {
             boolean res = voorraad.setVoorraad(Integer.parseInt(index.getText()), Integer.parseInt(item.getText()));
 
             if(res){
-                dispose();
-            } else {
-                System.out.println("foutje");
+                System.out.println("update");
             }
         }
     }
