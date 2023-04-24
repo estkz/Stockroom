@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class Frame extends JFrame {
     VoorraadPanel voorraad = new VoorraadPanel();
+    ButtonPanel buttons = new ButtonPanel(this);
 
     Frame(){
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -13,6 +14,7 @@ public class Frame extends JFrame {
 
 
         add(voorraad);
+        add(buttons);
 
         setVisible(true);
     }
