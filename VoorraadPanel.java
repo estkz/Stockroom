@@ -5,9 +5,11 @@ import java.awt.event.ActionListener;
 
 
 public class VoorraadPanel extends JPanel implements ActionListener {
-    Voorraad voorraad = new Voorraad();
+    JFrame parentFrame;
 
-    VoorraadPanel() {
+    VoorraadPanel(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
+
         setBounds(0, 0, 400, 400);
         setBackground(Color.lightGray);
         setLayout(new GridLayout(5, 5));
@@ -17,8 +19,8 @@ public class VoorraadPanel extends JPanel implements ActionListener {
 
     public void drawVoorraad() {
         for(int i=0; i<25; i++) {
-            if (voorraad.getVoorraad()[i] != 0) {
-                JLabel label = new JLabel("Item " + voorraad.getVoorraad()[i]);
+            if (Voorraad.getVoorraad()[i] != 0) {
+                JLabel label = new JLabel("Item " + Voorraad.getVoorraad()[i]);
                 label.setBorder(BorderFactory.createLineBorder(Color.black));
                 label.setHorizontalAlignment(JLabel.CENTER);
                 add(label);

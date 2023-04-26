@@ -1,11 +1,11 @@
 public class Voorraad {
     int x;
 
-    int[] plekken = {
-            0,0,0,0,20,0,0,0,0,4,0,0,0,13,0,0,0,6,0,0,0,0,9,0,0
+    static int[] plekken = {
+            0,0,0,0,20,0,1,0,0,4,0,0,0,13,0,0,0,6,0,0,3,0,9,0,0
     };
 
-    int[] getVoorraad(){
+    static int[] getVoorraad(){
         return plekken;
     }
 
