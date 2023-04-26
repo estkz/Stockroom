@@ -6,6 +6,15 @@ public class Main {
         Orders.setOrderCheck(5, 6, 3, 5);
         Orders.setOrderCheck(6, 4,6,2);
 
+        boolean res1 = Voorraad.setVoorraad(3,6);
+        boolean res2 = Voorraad.setVoorraad(24,3);
+        boolean res3 = Voorraad.setVoorraad(1,10);
+        boolean res4 = Voorraad.setVoorraad(15,52);
+        boolean res5 = Voorraad.setVoorraad(12,20);
+        boolean res6 = Voorraad.setVoorraad(25,19);
+
+
+
 
         new Frame();
 

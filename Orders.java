@@ -22,15 +22,6 @@ public class Orders {
 
 
     static int[][] getOrders(){
-//        for(int i=0; i<orders.length; i++){
-//            if(orders[i] != null) {
-//                for (int j = 0; j < orders[i].length; j++) {
-//                    System.out.println("Order nr " + i + " item " + orders[i][j]);
-//                }
-//                System.out.println();
-//                System.out.println();
-//            }
-//        }
         return orders;
     }
 

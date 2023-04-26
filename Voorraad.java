@@ -1,18 +1,18 @@
 public class Voorraad {
-    int x;
 
     static int[] plekken = {
-            0,0,0,0,20,0,1,0,0,4,0,0,0,13,0,0,0,6,0,0,3,0,9,0,0
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     };
 
     static int[] getVoorraad(){
         return plekken;
     }
 
-    boolean setVoorraad(int index, int item){
+    static boolean setVoorraad(int index, int item){
+        int x;
         x = index-1;
 
-        if(x < 0 || x > 25){
+        if(index < 1 || index > 25){
             System.out.println(index + ": de index moet een getal van 1-25 zijn");
             return false;
         }
