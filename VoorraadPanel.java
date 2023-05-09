@@ -3,38 +3,71 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class VoorraadPanel extends JPanel implements ActionListener {
+    Database db = new Database();
+
     JFrame parentFrame;
+    JTextField item = new JTextField();
+    JTextField plek = new JTextField();
+
+    JButton voorraadAanpassen = new JButton("Voorraad aanpassen");
+
+    JLabel[] labels = new JLabel[25];
 
     VoorraadPanel(JFrame parentFrame) {
         this.parentFrame = parentFrame;
 
         setBounds(0, 0, 400, 400);
         setBackground(Color.lightGray);
-        setLayout(new GridLayout(5, 5));
+        setLayout(new GridLayout(6, 5));
+
+        for (int i = 0; i < 25; i++) {
+            labels[i] = new JLabel();
+            labels[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            labels[i].setHorizontalAlignment(SwingConstants.CENTER);
+            add(labels[i]);
+        }
+
+
+        voorraadAanpassen.addActionListener(this);
+
         drawVoorraad();
+        add(new JLabel("Item nr."));
+        add(item);
+        add(new JLabel("Plek nr."));
+        add(plek);
+        add(voorraadAanpassen);
     }
 
 
     public void drawVoorraad() {
+        int[] voorraadArray = Voorraad.getVoorraad();
+
         for(int i=0; i<25; i++) {
-            if (Voorraad.getVoorraad()[i] != 0) {
-                JLabel label = new JLabel("Item " + Voorraad.getVoorraad()[i]);
-                label.setBorder(BorderFactory.createLineBorder(Color.black));
-                label.setHorizontalAlignment(JLabel.CENTER);
-                add(label);
+            int voorraadItem = voorraadArray[i];
+
+            if (voorraadItem != 0) {
+                labels[i].setText("Item: "+voorraadItem);
             } else {
-                JLabel label = new JLabel("");
-                label.setBorder(BorderFactory.createLineBorder(Color.black));
-                add(label);
+                labels[i].setText("");
             }
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        try{
+            boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
+            drawVoorraad();
 
+            if(res){
+                JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, "ERROR", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex){
+            System.out.println(e);
+        }
     }
 }
 

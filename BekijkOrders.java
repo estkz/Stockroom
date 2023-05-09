@@ -34,6 +34,7 @@ public class BekijkOrders extends JDialog {
         newOrder.addActionListener(e -> {
             new OrderAanmaken(parentFrame, true);
         });
+
         updateOrders.addActionListener(e -> {
             displayOrders();
         });
@@ -62,12 +63,16 @@ public class BekijkOrders extends JDialog {
                 orderInfo.append("lege order");
 
             }
+
             order = new JLabel(String.valueOf(orderInfo));
+
             if(Orders.getOrders()[i] != null){
                 order.setBackground(Color.green);
             } else {
                 order.setBackground(Color.red);
+                order.setForeground(Color.white);
             }
+
             orderList.add(order);
             order.setOpaque(true);
         }

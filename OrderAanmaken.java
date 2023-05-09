@@ -76,7 +76,7 @@ public class OrderAanmaken extends JDialog {
                 System.out.println("gelukt");
                 repaint();
             } else {
-                JOptionPane.showMessageDialog(parentFrame, "Order nummer bestaat al", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentFrame, "Order nummer bestaat al of is te groot (max = 10)", "ERROR", JOptionPane.ERROR_MESSAGE);
                 System.out.println("niet gelukt");
             }
 

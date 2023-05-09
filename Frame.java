@@ -11,7 +11,7 @@ public class Frame extends JFrame {
         setTitle("HMI");
         setSize(new Dimension(750,750));
         setLayout(null);
-        setResizable(false);
+        setResizable(true);
 
 
         add(voorraad);
