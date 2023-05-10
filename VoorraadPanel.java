@@ -56,17 +56,23 @@ public class VoorraadPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try{
-            boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
-            drawVoorraad();
-
-            if(res){
-                JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
-            } else {
-                JOptionPane.showMessageDialog(parentFrame, "ERROR", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+        if (e.getSource() == voorraadAanpassen) {
+            if(Integer.parseInt(plek.getText()) > 25 || Integer.parseInt(plek.getText()) < 1){
+                JOptionPane.showMessageDialog(parentFrame, "GEEN GELDIGE PLEK (1-25)", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        } catch (Exception ex){
-            System.out.println(e);
+            try {
+                boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
+                drawVoorraad();
+
+                if (res) {
+                    JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
+                } else {
+                    JOptionPane.showMessageDialog(parentFrame, "ERROR, Item staat al in de kast", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                System.out.println(e);
+            }
         }
     }
 }
