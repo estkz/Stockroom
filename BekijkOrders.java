@@ -45,6 +45,7 @@ public class BekijkOrders extends JDialog {
         add(newOrder);
         add(updateOrders);
 
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

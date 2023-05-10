@@ -2,16 +2,14 @@ import java.sql.*;
 
 public class Database {
 
-    String url = "jdbc:mysql://127.0.0.1:3306/nerdygadgets_robotarm";
-    String user = "root";
-    String pass = "root";
+    String[] info = Config.getInfo();
 
     public int[] getItems(){
         int[] x = new int[25];
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, pass);
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM items");
@@ -30,7 +28,7 @@ public class Database {
     public void setItems(int a, String b, int plek){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, pass);
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO items (item_id, kleur, plek) VALUES ("+a+",'"+b+"',"+plek+")");
@@ -45,7 +43,7 @@ public class Database {
     public boolean setItems(int itemID, int plek){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, pass);
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO items (item_id, plek) VALUES ("+itemID+","+plek+")");
@@ -62,7 +60,7 @@ public class Database {
     public void removeItems(int a){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, user, pass);
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM items WHERE item_id="+a);
