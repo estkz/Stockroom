@@ -8,7 +8,6 @@ public class BekijkOrders extends JDialog {
     JButton newOrder = new JButton("Nieuwe order");
     JButton updateOrders = new JButton("Update order weergave");
     JPanel orderList = new JPanel();
-//    JScrollPane scroll = new JScrollPane(orderList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     JFrame parentFrame;
 
     BekijkOrders(JFrame parentFrame, boolean m){
@@ -39,8 +38,6 @@ public class BekijkOrders extends JDialog {
             displayOrders();
         });
 
-
-//        add(scroll);
         add(orderList);
         add(newOrder);
         add(updateOrders);
