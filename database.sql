@@ -1,4 +1,5 @@
 ---------  DATABASE SCRIPT  ---------
+---------  NIET VERANDEREN  ---------
 
 CREATE DATABASE IF NOT EXISTS nerdygadgets_robotarm;
 USE nerdygadgets_robotarm;
