@@ -15,7 +15,8 @@ public class Arm extends JPanel implements ActionListener {
 
     JTextField item = new JTextField();
     JTextField plek = new JTextField();
-    JButton voorraadAanpassen = new JButton("Voorraad aanpassen");
+    JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
+    JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
 
 
     Arm(JFrame parentFrame){
@@ -65,21 +66,25 @@ public class Arm extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == voorraadAanpassen) {
-            if(Integer.parseInt(plek.getText()) > 25 || Integer.parseInt(plek.getText()) < 1){
-                JOptionPane.showMessageDialog(parentFrame, "GEEN GELDIGE PLEK (1-25)", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
             try {
-                boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
-                VoorraadPanel.drawVoorraad();
-
-                if (res) {
-                    JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
-                } else {
-                    JOptionPane.showMessageDialog(parentFrame, "ERROR, Item staat al in de kast", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                if (Integer.parseInt(plek.getText()) > 25 || Integer.parseInt(plek.getText()) < 1) {
+                    JOptionPane.showMessageDialog(parentFrame, "GEEN GELDIGE PLEK (1-25)", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            } catch (Exception ex) {
-                System.out.println(e);
+                try {
+                    boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
+                    VoorraadPanel.drawVoorraad();
+
+                    if (res) {
+                        JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
+                    } else {
+                        JOptionPane.showMessageDialog(parentFrame, "ERROR, Item staat al in de kast en/of staat al een item op deze plek", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    System.out.println(e);
+                }
+            } catch(Exception exception){
+                JOptionPane.showMessageDialog(parentFrame, "ERROR, vul een int in s.v.p.", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

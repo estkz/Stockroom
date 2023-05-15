@@ -26,6 +26,8 @@ public class Database {
     }
 
     public void setItems(int a, String b, int plek){
+
+
         try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
