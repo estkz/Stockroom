@@ -1,11 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class VoorraadPanel extends JPanel implements ActionListener {
-    Database db = new Database();
-
+public class VoorraadPanel extends JPanel{
     JFrame parentFrame;
 
     static JLabel[] labels = new JLabel[25];
@@ -43,11 +39,6 @@ public class VoorraadPanel extends JPanel implements ActionListener {
                 labels[i].setText("");
             }
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }
 

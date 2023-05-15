@@ -59,7 +59,7 @@ public class Database {
         }
     }
 
-    public void removeItems(int a){
+    public boolean removeItems(int a, int b){
         try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
@@ -69,8 +69,10 @@ public class Database {
 
             con.close();
 
+            return true;
         } catch(Exception e){
             System.out.println(e);
         }
+        return false;
     }
 }

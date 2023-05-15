@@ -1,7 +1,11 @@
 public class Config {
-    static String url = "jdbc:mysql://127.0.0.1:3306/nerdygadgets_robotarm";
+    static String ip = "127.0.0.1";
+    static String port = "3306";
     static String user = "root";
     static String pass = "root";
+
+    //niet veranderen
+    static String url = "jdbc:mysql://"+ip+":"+port+"/nerdygadgets_robotarm";
 
 
     static String[] getInfo(){
