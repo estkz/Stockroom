@@ -1,7 +1,3 @@
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 public class Orders {
     static int[][] orders = new int[11][];
     static int aantalOrders = 0;
