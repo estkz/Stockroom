@@ -13,6 +13,8 @@ public class Arm extends JPanel implements ActionListener {
     JButton bekijkOrders = new JButton("Bekijk orders");
     JButton bekijkPakbonnen = new JButton("Bekijk pakbonnen");
 
+    JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
+
     JTextField item = new JTextField();
     JTextField plek = new JTextField();
     JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
@@ -51,7 +53,7 @@ public class Arm extends JPanel implements ActionListener {
 
         buttonPanel2.add(bekijkOrders);
         buttonPanel2.add(bekijkPakbonnen);
-
+        buttonPanel2.add(bekijkWachtrij);
 
         add(buttonPanel1);
         add(buttonPanel2);
@@ -62,6 +64,10 @@ public class Arm extends JPanel implements ActionListener {
 
         bekijkPakbonnen.addActionListener(e -> {
             new BekijkPakbonnen(parentFrame, true);
+        });
+
+        bekijkWachtrij.addActionListener(e -> {
+            new BekijkWachtrij(parentFrame, true);
         });
 
 
