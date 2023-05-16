@@ -24,5 +24,9 @@ public class BekijkWachtrij extends JDialog {
 
         setLocationRelativeTo(null);
         setVisible(true);
+
+        // [+] Plek   -   [+] orderID   -   [+] aantalItemsInOrder
+        //                                              |
+        //                                               -----> [+] itemID   -   [+] itemType
     }
 }

@@ -13,7 +13,7 @@ public class Arm extends JPanel implements ActionListener {
     JButton bekijkOrders = new JButton("Bekijk orders");
     JButton bekijkPakbonnen = new JButton("Bekijk pakbonnen");
 
-    JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
+     /* Java Stukje Nick */ JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
 
     JTextField item = new JTextField();
     JTextField plek = new JTextField();
