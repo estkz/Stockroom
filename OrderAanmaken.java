@@ -24,9 +24,9 @@ public class OrderAanmaken extends JDialog{
 
         JComboBox<Integer> comboBox = new JComboBox<>();
         for(int i = 0; i< db.getItems().length; i++){
-            if(db.getItems()[i] != 0) {
-                comboBox.addItem(db.getItems()[i]);
-            }
+//            if(db.getItems()[i] != 0) {
+//                comboBox.addItem(db.getItems()[i]);
+//            }
         }
         comboBox.setPreferredSize(new Dimension(150,21));
 

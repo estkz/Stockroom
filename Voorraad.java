@@ -8,7 +8,7 @@ public class Voorraad {
 
     static void getDatabasePlekken(){
         Database db = new Database();
-        int[] x = db.getItems();
+        int[] x = db.getPlekken();
 
         System.arraycopy(x, 0, plekken, 0, x.length);
     }

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class Arm extends JPanel implements ActionListener {
     Database db = new Database();
@@ -13,8 +14,9 @@ public class Arm extends JPanel implements ActionListener {
     JButton bekijkOrders = new JButton("Bekijk orders");
     JButton bekijkPakbonnen = new JButton("Bekijk pakbonnen");
 
-    JTextField item = new JTextField();
-    JTextField plek = new JTextField();
+    JComboBox<String> item = new JComboBox<>();
+    JComboBox<Integer> plek = new JComboBox<>();
+
     JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
     JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
 
@@ -26,6 +28,13 @@ public class Arm extends JPanel implements ActionListener {
         setBackground(Color.lightGray);
         setLayout(new FlowLayout());
         setBorder(BorderFactory.createLineBorder(Color.black));
+
+        for(int i=0; i<db.getAantalItems(); i++){
+            item.addItem((i+1) + " " + db.getItems()[i]);
+        }
+        for(int i=1; i<=25; i++){
+            plek.addItem(i);
+        }
 
 
         buttonPanel1.setLayout(new GridLayout(3,2));
@@ -71,65 +80,59 @@ public class Arm extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == voorraadAanpassen) {
-            try {
-                if (Integer.parseInt(plek.getText()) > 25 || Integer.parseInt(plek.getText()) < 1) {
-                    JOptionPane.showMessageDialog(parentFrame, "GEEN GELDIGE PLEK (1-25)", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                try {
-                    boolean res = db.setItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
-                    VoorraadPanel.drawVoorraad();
+            int plekVar = 0;
+            int itemVar = 0;
+            boolean res = false;
 
-                    if (res) {
-                        JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
-                    } else {
-                        JOptionPane.showMessageDialog(parentFrame, "ERROR, Item staat al in de kast en/of staat al een item op deze plek", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (Exception ex) {
-                    System.out.println(e);
-                }
-            } catch (Exception exception) {
-                JOptionPane.showMessageDialog(parentFrame, "ERROR, vul een int in s.v.p.", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+            try {
+                plekVar = Integer.parseInt(Objects.requireNonNull(plek.getSelectedItem()).toString());
+                itemVar = Character.getNumericValue(Objects.requireNonNull(item.getSelectedItem()).toString().charAt(0));
+            } catch (NumberFormatException numE){
+                System.out.println(numE);
+            }
+
+            if (plekVar != 0 && itemVar != 0) {
+                res = db.setItems(plekVar, itemVar);
+            }
+            VoorraadPanel.drawVoorraad();
+
+            if (res) {
+                JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, "ERROR", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
+
 
         if (e.getSource() == voorraadVerwijderen) {
+            int plekVar = 0;
+            int itemVar = 0;
+            boolean res = false;
+
             try {
-                if (db.getItems()[Integer.parseInt(plek.getText()) - 1] == Integer.parseInt(item.getText())) {
-
-                    if (Integer.parseInt(plek.getText()) > 25 || Integer.parseInt(plek.getText()) < 1) {
-                        JOptionPane.showMessageDialog(parentFrame, "GEEN GELDIGE PLEK (1-25)", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    try {
-                        int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u item "+item.getText()+" wilt verwijderen van plek "+plek.getText()+"?", "Confirm", JOptionPane.YES_NO_OPTION);
-                        boolean res = false;
-
-
-                        System.out.println(input);
-                        if(input == 0){
-                            res = db.removeItems(Integer.parseInt(item.getText()), Integer.parseInt(plek.getText()));
-                            VoorraadPanel.drawVoorraad();
-
-                            if (res) {
-                                JOptionPane.showMessageDialog(parentFrame, "Voorraad verwijdert!");
-                            } else {
-                                JOptionPane.showMessageDialog(parentFrame, "ERROR, Item staat al in de kast en/of staat al een item op deze plek", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-
-
-                    } catch (Exception ex) {
-                        System.out.println(e);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(parentFrame, "ERROR, op plek " + plek.getText() + " staat item " + item.getText() + " niet.", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-            }catch(Exception exception){
-                    JOptionPane.showMessageDialog(parentFrame, "ERROR, vul een int in s.v.p.", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                plekVar = Integer.parseInt(Objects.requireNonNull(plek.getSelectedItem()).toString());
+                itemVar = Character.getNumericValue(Objects.requireNonNull(item.getSelectedItem()).toString().charAt(0));
+            } catch (NumberFormatException numE){
+                System.out.println(numE);
             }
+
+
+            try {
+                int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u item "+item.getSelectedItem()+" wilt verwijderen van plek "+plek.getSelectedItem()+"?", "Confirm", JOptionPane.YES_NO_OPTION);
+                System.out.println(input);
+                if(input == 0){
+                    res = db.removeItems(itemVar, plekVar);
+                    VoorraadPanel.drawVoorraad();
+                    if (res) {
+                        JOptionPane.showMessageDialog(parentFrame, "Voorraad verwijderd!");
+                    } else {
+                        JOptionPane.showMessageDialog(parentFrame, "ERROR, voorraad niet verwijderd", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println(e);
+            }
+
         }
     }
-
 }

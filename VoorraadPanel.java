@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class VoorraadPanel extends JPanel{
     JFrame parentFrame;
+    static Database db = new Database();
 
     static JLabel[] labels = new JLabel[25];
 
@@ -19,11 +20,7 @@ public class VoorraadPanel extends JPanel{
             labels[i].setHorizontalAlignment(SwingConstants.CENTER);
             add(labels[i]);
         }
-
         drawVoorraad();
-
-
-
     }
 
 
@@ -34,7 +31,7 @@ public class VoorraadPanel extends JPanel{
             int voorraadItem = voorraadArray[i];
 
             if (voorraadItem != 0) {
-                labels[i].setText("Item: "+voorraadItem);
+                labels[i].setText("<html><h5>"+db.getItems()[voorraadItem-1]+"</h5></html>");
             } else {
                 labels[i].setText("");
             }
