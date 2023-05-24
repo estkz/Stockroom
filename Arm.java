@@ -14,8 +14,11 @@ public class Arm extends JPanel implements ActionListener {
     JButton bekijkOrders = new JButton("Bekijk orders");
     JButton bekijkPakbonnen = new JButton("Bekijk pakbonnen");
 
+
     JComboBox<String> item = new JComboBox<>();
     JComboBox<Integer> plek = new JComboBox<>();
+
+     /* Java Stukje Nick */ JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
 
     JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
     JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
@@ -60,7 +63,7 @@ public class Arm extends JPanel implements ActionListener {
 
         buttonPanel2.add(bekijkOrders);
         buttonPanel2.add(bekijkPakbonnen);
-
+        buttonPanel2.add(bekijkWachtrij);
 
         add(buttonPanel1);
         add(buttonPanel2);
@@ -71,6 +74,10 @@ public class Arm extends JPanel implements ActionListener {
 
         bekijkPakbonnen.addActionListener(e -> {
             new BekijkPakbonnen(parentFrame, true);
+        });
+
+        bekijkWachtrij.addActionListener(e -> {
+            new BekijkWachtrij(parentFrame, true);
         });
 
 
