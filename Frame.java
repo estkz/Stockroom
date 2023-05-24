@@ -9,7 +9,7 @@ public class Frame extends JFrame {
     Frame(){
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("HMI");
-        setSize(new Dimension(620,428));
+        setSize(new Dimension(634,428));
         setLayout(null);
         setResizable(false);
 
