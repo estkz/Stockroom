@@ -3,14 +3,35 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class BekijkOrders extends JDialog {
-    final int totaalAantalOrders = 10;
 
+    // Vars
+    int orderAmount = 10;
+
+    // Components
     JButton newOrder = new JButton("Nieuwe order");
-    JButton updateOrders = new JButton("Update order weergave");
-    JPanel orderList = new JPanel();
+
+
     JFrame parentFrame;
 
+    JComboBox orderCombo = new JComboBox();
+
+
+    JList orderList = new JList();
+
+    // Functions
+
+    /*
+    void displayOrdersToCombo() {
+        for(int i = 1; i < orderAmount; i++) {
+
+        }
+    }*/
+
+
+
     BekijkOrders(JFrame parentFrame, boolean m){
+
+        // Create dialog window
         super(parentFrame,  m);
         this.parentFrame = parentFrame;
 
@@ -19,60 +40,19 @@ public class BekijkOrders extends JDialog {
         setLayout(new FlowLayout());
         setResizable(false);
 
-        orderList.setPreferredSize(new Dimension(550,400));
-        orderList.setLayout(new GridLayout(totaalAantalOrders+1,2));
-        orderList.setBorder(BorderFactory.createLineBorder(Color.black));
+        // Component styling
+        orderCombo.setPreferredSize(new Dimension(250, 30));
 
-
-        orderList.add(new JLabel("Order nr"));
-        orderList.add(new JLabel("items"));
-
-        //display orders
-        displayOrders();
-
-        newOrder.addActionListener(e -> {
-            new OrderAanmaken(parentFrame, true);
-        });
-
-        updateOrders.addActionListener(e -> {
-            displayOrders();
-        });
-
+        // Adding components
+        add(orderCombo);
         add(orderList);
         add(newOrder);
-        add(updateOrders);
+
+        orderList.setPreferredSize(new Dimension(550,400));
+        orderList.setLayout(new GridLayout(5,2));
+        orderList.setBorder(BorderFactory.createLineBorder(Color.black));
 
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    void displayOrders(){
-        StringBuilder orderInfo;
-        JLabel order;
-        for(int i=1; i<=totaalAantalOrders; i++){
-            orderList.add(new JCheckBox(String.valueOf(i)));
-
-            orderInfo = new StringBuilder();
-
-            if(Orders.getOrders()[i] != null) {
-                orderInfo.append(Arrays.toString(Orders.getOrders()[i]));
-
-            } else{
-                orderInfo.append("lege order");
-
-            }
-
-            order = new JLabel(String.valueOf(orderInfo));
-
-            if(Orders.getOrders()[i] != null){
-                order.setBackground(Color.green);
-            } else {
-                order.setBackground(Color.red);
-                order.setForeground(Color.white);
-            }
-
-            orderList.add(order);
-            order.setOpaque(true);
-        }
     }
 }
