@@ -1,12 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
+import java.time.Clock;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class BekijkPakbonnen extends JDialog {
-    Database db = new Database();
-    JButton haalPakbon = new JButton("Ophalen pakbon van order");
-    DefaultListModel<String> listModel = new DefaultListModel<>();
-    JList<String> pakbonList = new JList<>(listModel);
     JFrame parentFrame;
+
+    // Vars
+    String packingSlipTitle = "Pakbon";
+    String clientName = "Tom Prachtig";
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    LocalDateTime current = LocalDateTime.now();
+
 
     BekijkPakbonnen(JFrame frame, boolean m){
         super(frame, m);
@@ -17,15 +24,21 @@ public class BekijkPakbonnen extends JDialog {
         setLayout(new FlowLayout());
         setResizable(false);
 
+        JLabel packingSlipNumber = new JLabel("420");
+        JLabel orderID = new JLabel("1");
+        JLabel klantNaam = new JLabel("Naam: " + clientName);
+        JLabel date = new JLabel("Datum: " + dtf.format(current));
+        JLabel titlePackingSlip = new JLabel(packingSlipTitle);
 
 
-        add(new JLabel("Pakbon halen: "));
-        add(pakbonList);
-        add(haalPakbon);
+        // Add Components
+        add(titlePackingSlip);
+        add(klantNaam);
+        add(date);
 
-        pakbonList.setPreferredSize(new Dimension(550,400));
-        pakbonList.setLayout(new GridLayout(5,2));
-        pakbonList.setBorder(BorderFactory.createLineBorder(Color.black));
+
+
+
 
         setLocationRelativeTo(null);
         setVisible(true);
