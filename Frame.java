@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Frame extends JFrame {
     VoorraadPanel voorraad = new VoorraadPanel(this);
-    Arm arm = new Arm(this);
+    HomeUI arm = new HomeUI(this);
 
 
     Frame(){

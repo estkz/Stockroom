@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Database {
 
@@ -80,10 +82,8 @@ public class Database {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
-
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM schap WHERE item_id="+a+" AND plek="+b);
-
             con.close();
 
             return true;
@@ -91,5 +91,81 @@ public class Database {
             System.out.println(e);
         }
         return false;
+    }
+
+    public int getOrderID(int order_id) {
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT order_id FROM orders WHERE order_id = "+order_id);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public ArrayList<ArrayList<Integer>> getOrderLines(int order_id) {
+        ArrayList<ArrayList<Integer>> x = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT orderline_id FROM orderlines WHERE order_id = "+order_id);
+
+            ArrayList<Integer> temp = new ArrayList<Integer>();
+            while(rs.next()) {
+                temp.add(rs.getInt(1));
+            }
+
+            x.add(temp);
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public int getAantalOrders() {
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orders");
+            while(rs.next()) {
+                x++;
+            }
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public int getItemIDFromOrderline(int orderline){
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderlines WHERE orderline_id="+orderline);
+
+            while(rs.next()) {
+                x = rs.getInt(3);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x-1;
     }
 }

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class Arm extends JPanel implements ActionListener {
+public class HomeUI extends JPanel implements ActionListener {
     Database db = new Database();
     JFrame parentFrame;
 
@@ -24,7 +24,7 @@ public class Arm extends JPanel implements ActionListener {
     JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
 
 
-    Arm(JFrame parentFrame){
+    HomeUI(JFrame parentFrame){
         this.parentFrame = parentFrame;
 
         setBounds(420,0,200,400);
@@ -130,6 +130,8 @@ public class Arm extends JPanel implements ActionListener {
                 if(input == 0){
                     res = db.removeItems(itemVar, plekVar);
                     VoorraadPanel.drawVoorraad();
+
+
                     if (res) {
                         JOptionPane.showMessageDialog(parentFrame, "Voorraad verwijderd!");
                     } else {

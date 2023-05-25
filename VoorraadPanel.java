@@ -5,6 +5,8 @@ public class VoorraadPanel extends JPanel{
     JFrame parentFrame;
     static Database db = new Database();
 
+    static JPanel[] panels = new JPanel[25];
+    static JLabel[] nr = new JLabel[25];
     static JLabel[] labels = new JLabel[25];
 
     VoorraadPanel(JFrame parentFrame) {
@@ -15,10 +17,22 @@ public class VoorraadPanel extends JPanel{
         setLayout(new GridLayout(5, 5));
 
         for (int i = 0; i < 25; i++) {
+            panels[i] = new JPanel();
+            panels[i].setLayout(new GridLayout(2,1));
+            panels[i].setBackground(Color.lightGray);
+            panels[i].setBorder(BorderFactory.createLineBorder(Color.black));
+            add(panels[i]);
+
+            nr[i] = new JLabel("<html><h5 style="+(char)34+"color:gray;"+(char)34+">"+(i+1)+"</h5></html>");
+            nr[i].setVerticalAlignment(SwingConstants.TOP);
+            nr[i].setHorizontalAlignment(SwingConstants.LEFT);
+
             labels[i] = new JLabel();
-            labels[i].setBorder(BorderFactory.createLineBorder(Color.black));
             labels[i].setHorizontalAlignment(SwingConstants.CENTER);
-            add(labels[i]);
+            labels[i].setVerticalAlignment(SwingConstants.TOP);
+
+            panels[i].add(nr[i]);
+            panels[i].add(labels[i]);
         }
         drawVoorraad();
     }
