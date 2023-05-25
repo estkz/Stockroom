@@ -1,7 +1,5 @@
 ---------  DATABASE SCRIPT  ---------
 ---------  NIET VERANDEREN  ---------
----------  DATABASE SCRIPT  ---------
----------  NIET VERANDEREN  ---------
 
 CREATE DATABASE IF NOT EXISTS nerdygadgets_robotarm;
 USE nerdygadgets_robotarm;
@@ -60,5 +58,7 @@ VALUES (1, 1, 4, 1),
 		(3, 2, 1, 5),
 		(4, 2, 6, 2),
 		(5, 3, 2, 1);
+
+DELETE FROM schap;
 
 
