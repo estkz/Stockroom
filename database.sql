@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `schap` (
 INSERT INTO items (item_id, item_naam)
 VALUES (1, "Furry pak"),
 		(2, "Game hond"),
-        (3, "Cumsok van Nick"),
+        (3, "TV"),
         (4, "Vier (4) euro"),
         (5, "JOUW moeder"),
         (6, "Ballen");
