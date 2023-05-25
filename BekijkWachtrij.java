@@ -49,7 +49,8 @@ public class BekijkWachtrij extends JDialog {
         String columnNames[] = { "Plek", "Order ID", "Aantal Items" };
 
         String itemData[][] = {
-                { "2", "Furry Socks (cum)" }
+                { "1", "Furry Socks" },
+                { "2", "Worstuhbroodje" }
         };
 
         String itemColumnNames[] = { "Item ID", "Item Beschrijving" };
