@@ -111,6 +111,8 @@ public class HomeUI extends JPanel implements ActionListener {
         }
 
 
+
+
         if (e.getSource() == voorraadVerwijderen) {
             int plekVar = 0;
             int itemVar = 0;
@@ -123,11 +125,11 @@ public class HomeUI extends JPanel implements ActionListener {
                 System.out.println(numE);
             }
 
-
             try {
-                int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u item "+item.getSelectedItem()+" wilt verwijderen van plek "+plek.getSelectedItem()+"?", "Confirm", JOptionPane.YES_NO_OPTION);
+                int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u item " + item.getSelectedItem() + " wilt verwijderen van plek " + plek.getSelectedItem() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
                 System.out.println(input);
-                if(input == 0){
+
+                if (input == 0) {
                     res = db.removeItems(itemVar, plekVar);
                     VoorraadPanel.drawVoorraad();
 
@@ -141,7 +143,6 @@ public class HomeUI extends JPanel implements ActionListener {
             } catch (Exception ex) {
                 System.out.println(e);
             }
-
         }
     }
 }
