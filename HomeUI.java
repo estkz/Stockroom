@@ -18,7 +18,9 @@ public class HomeUI extends JPanel implements ActionListener {
     JComboBox<String> item = new JComboBox<>();
     JComboBox<Integer> plek = new JComboBox<>();
 
-     /* Java Stukje Nick */ JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
+     // Java Stukje Nick
+    JButton bekijkWachtrij = new JButton("Bekijk wachtrij");
+    ImageIcon hmiLogo = new ImageIcon("nerdie.png");
 
     JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
     JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
@@ -31,6 +33,7 @@ public class HomeUI extends JPanel implements ActionListener {
         setBackground(Color.lightGray);
         setLayout(new FlowLayout());
         setBorder(BorderFactory.createLineBorder(Color.black));
+        parentFrame.setIconImage(hmiLogo.getImage());
 
         for(int i=0; i<db.getAantalItems(); i++){
             item.addItem((i+1) + " " + db.getItems()[i]);
