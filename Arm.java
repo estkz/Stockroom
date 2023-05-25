@@ -130,6 +130,8 @@ public class Arm extends JPanel implements ActionListener {
                 if(input == 0){
                     res = db.removeItems(itemVar, plekVar);
                     VoorraadPanel.drawVoorraad();
+
+
                     if (res) {
                         JOptionPane.showMessageDialog(parentFrame, "Voorraad verwijderd!");
                     } else {
