@@ -26,6 +26,7 @@ public class BekijkWachtrij extends JDialog {
         // Components
         JPanel panelID = new JPanel();
         JButton viewItems = new JButton("Bekijk Items");
+        JButton pageBack = new JButton("<--");
         JTable wachtrijTable;
         JTable itemsTable;
 
@@ -48,7 +49,8 @@ public class BekijkWachtrij extends JDialog {
         String columnNames[] = { "Plek", "Order ID", "Aantal Items" };
 
         String itemData[][] = {
-                { "2", "Furry Socks (cum)" }
+                { "1", "Furry Socks" },
+                { "2", "Worstuhbroodje" }
         };
 
         String itemColumnNames[] = { "Item ID", "Item Beschrijving" };
@@ -72,6 +74,19 @@ public class BekijkWachtrij extends JDialog {
         viewItems.addActionListener(e -> {
             wachtrijScrollpane.setVisible(false);
             itemsScrollpane.setVisible(true);
+            add(pageBack);
+            pageBack.setVisible(true);
+            getContentPane().validate();
+            getContentPane().repaint();
+
+        });
+
+        pageBack.addActionListener(e -> {
+            itemsScrollpane.setVisible(false);
+            wachtrijScrollpane.setVisible(true);
+            getContentPane().validate();
+            getContentPane().repaint();
+            pageBack.setVisible(false);
         });
 
         setLocationRelativeTo(null);
