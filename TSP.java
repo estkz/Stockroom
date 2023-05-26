@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class TSP {
     private static final int[] GRID = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
 
-    static int[] TSPAlgorithm(ArrayList<Integer> receivedCoordinates){
+    static int[][] TSPAlgorithm(ArrayList<Integer> receivedCoordinates){
         int[] coordinates = new int[receivedCoordinates.size()];
 
         for (int i = 0; i < receivedCoordinates.size(); i++) {
@@ -13,18 +14,16 @@ public class TSP {
 
         System.out.println(Arrays.toString(coordinates));
 
-        int[] route = calculateBestRoute(coordinates);
-        //add to the route array 25 as first and last element
-        int[] route2 = new int[route.length + 2];
-        route2[0] = 25;
-        route2[route2.length - 1] = 25;
-        System.arraycopy(route, 0, route2, 1, route.length);
-        return route;
+        int[] route = new int[coordinates.length];
+        System.arraycopy(calculateBestRoute(coordinates), 1, route, 0, coordinates.length);
+
+        int[][] splicedRoute = new int[(int) Math.floor(coordinates.length+1.001/3)+1][];
+        splicedRoute = splitArray(route, 3);
+        return splicedRoute;
     }
 
     public static int[] calculateBestRoute(int[] coordinates) {
-        int[] modifiedCoordinates = new int[coordinates.length + 2];
-        modifiedCoordinates[modifiedCoordinates.length - 1] = 25;
+        int[] modifiedCoordinates = new int[coordinates.length + 1];
         modifiedCoordinates[0] = 25;
         System.arraycopy(coordinates, 0, modifiedCoordinates, 1, coordinates.length);
 
@@ -42,7 +41,7 @@ public class TSP {
             visited[currentIdx] = true;
         }
 
-        route[0]=25;
+
         return Arrays.copyOfRange(route, 0, route.length);
     }
 
@@ -70,5 +69,12 @@ public class TSP {
             }
         }
         return -1;
+    }
+
+    public static int[][] splitArray(int[] inputArray, int chunkSize) {
+        return IntStream.iterate(0, i -> i + chunkSize)
+                .limit((int) Math.ceil((double) inputArray.length / chunkSize))
+                .mapToObj(j -> Arrays.copyOfRange(inputArray, j, Math.min(inputArray.length, j + chunkSize)))
+                .toArray(int[][]::new);
     }
 }

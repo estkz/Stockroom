@@ -5,10 +5,10 @@ public class Main {
     public static void main(String[] args) {
         Voorraad.getDatabasePlekken();
         Database db = new Database();
+        ArrayList<Integer> arr = db.getItemArrayList(2);
 //        new Frame();
 
-        ArrayList<Integer> arr =  db.getItemArrayList(4);
 
-        System.out.println(Arrays.toString(TSP.TSPAlgorithm(arr)));
+        System.out.println(Arrays.deepToString(TSP.TSPAlgorithm(arr)));
     }
 }

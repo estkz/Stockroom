@@ -208,4 +208,42 @@ public class Database {
         items = new ArrayList<>(arr);
         return items;
     }
+
+    public int getAantalFromOrderlist(int orderLineID){
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT aantal FROM orderlines WHERE orderline_id="+orderLineID);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public double getGewicht(int itemID){
+        double x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT gewicht_in_kg FROM items WHERE item_id="+itemID);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
 }

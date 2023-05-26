@@ -11,6 +11,7 @@ public class BekijkOrders extends JDialog {
 
     // Components
     JButton newOrder = new JButton("Nieuwe order");
+    JButton executeOrder = new JButton("Order uitvoeren");
 
     JFrame parentFrame;
 
@@ -35,8 +36,16 @@ public class BekijkOrders extends JDialog {
                     //toegang onderdelen van arraylist
                     int orderlineVar = db.getOrderLines(i).get(j).get(k);
                     if(i == orderID) {
+                        int itemID = db.getItemIDFromOrderline(orderlineVar);
+                        int aantal = db.getAantalFromOrderlist(orderlineVar);
+                        double gewicht = db.getGewicht(db.getItemIDFromOrderline(orderlineVar)+1);
+
+
                         listModel.addElement("Orderline nr. "+orderlineVar
-                                + "   ||    Item: "+db.getItems()[db.getItemIDFromOrderline(orderlineVar)]);
+                                + "   ||    Item: " + db.getItems()[itemID]
+                                + "   ||    Aantal: " + aantal
+                                + "   ||    Gewicht: " + aantal + "*" + gewicht+" = "
+                                + (gewicht*(float)aantal) + "kg");
                     }
 
                 }
@@ -58,9 +67,7 @@ public class BekijkOrders extends JDialog {
         // Component styling
         orderCombo.setPreferredSize(new Dimension(250, 30));
 
-        // Adding components
-        displayOrdersToCombo();
-
+        // Component functionality
         orderCombo.addActionListener(e -> {
             listModel.removeAllElements();
             for(int i=0; i<=db.getAantalOrders(); i++) {
@@ -71,11 +78,21 @@ public class BekijkOrders extends JDialog {
             }
         });
 
+        executeOrder.addActionListener(e -> {
+            if(orderCombo.getSelectedItem() != null) {
+                int[][] arr = TSP.TSPAlgorithm(db.getItemArrayList((int) orderCombo.getSelectedItem()));
+                System.out.println(Arrays.toString(arr));
+            }
+        });
+
+        // Adding components
+        displayOrdersToCombo();
 
         add(new JLabel("Order nummer: "));
         add(orderCombo);
         add(orderList);
         add(newOrder);
+        add(executeOrder);
 
         orderList.setPreferredSize(new Dimension(550,400));
         orderList.setLayout(new GridLayout(5,2));
