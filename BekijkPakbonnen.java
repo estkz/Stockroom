@@ -54,12 +54,6 @@ public class BekijkPakbonnen extends JDialog {
         mainPanel.add(leftPanel, BorderLayout.WEST);
 
 
-
-
-
-
-
-
         setLocationRelativeTo(null);
         setVisible(true);
     }
