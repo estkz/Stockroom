@@ -17,9 +17,10 @@ public class TSP {
         int[] route = new int[coordinates.length];
         System.arraycopy(calculateBestRoute(coordinates), 1, route, 0, coordinates.length);
 
-        int[][] splicedRoute = new int[(int) Math.floor(coordinates.length+1.001/3)+1][];
+        int[][] splicedRoute;
         splicedRoute = splitArray(route, 3);
-        return splicedRoute;
+
+        return route25(splicedRoute);
     }
 
     public static int[] calculateBestRoute(int[] coordinates) {
@@ -76,5 +77,17 @@ public class TSP {
                 .limit((int) Math.ceil((double) inputArray.length / chunkSize))
                 .mapToObj(j -> Arrays.copyOfRange(inputArray, j, Math.min(inputArray.length, j + chunkSize)))
                 .toArray(int[][]::new);
+    }
+
+    public static int[][] route25(int[][] splicedRoute){
+        int[][] finalRoute = new int[splicedRoute.length][5];
+
+        for (int i = 0; i < splicedRoute.length; i++) {
+            System.arraycopy(splicedRoute[i], 0, finalRoute[i], 1, splicedRoute[i].length);
+
+            finalRoute[i][0] = 25;
+            finalRoute[i][4] = 25;
+        }
+        return finalRoute;
     }
 }
