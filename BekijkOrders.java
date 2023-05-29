@@ -81,7 +81,8 @@ public class BekijkOrders extends JDialog {
         executeOrder.addActionListener(e -> {
             if(orderCombo.getSelectedItem() != null) {
                 int[][] arr = TSP.TSPAlgorithm(db.getItemArrayList((int) orderCombo.getSelectedItem()));
-                System.out.println(Arrays.toString(arr));
+
+                System.out.println(Arrays.deepToString(arr));
             }
         });
 
