@@ -168,4 +168,82 @@ public class Database {
         }
         return x-1;
     }
+
+    public int getPlekFromItemID(int itemID){
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT plek FROM schap WHERE item_id="+itemID);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public ArrayList<Integer> getItemArrayList(int orderID){
+        ArrayList<Integer> items;
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        for(int i=1; i<= getAantalOrders(); i++){
+            for(int j=0; j<getOrderLines(i).size(); j++) {
+                for (int k=0; k<getOrderLines(i).get(j).size(); k++) {
+                    int orderlineVar = getOrderLines(i).get(j).get(k);
+                    int itemID = getItemIDFromOrderline(orderlineVar)+1;
+                    int plek = getPlekFromItemID(itemID);
+
+                    if(orderID == i) {
+                       arr.add(plek);
+                    }
+                }
+            }
+        }
+        items = new ArrayList<>(arr);
+        return items;
+    }
+
+    public int getAantalFromOrderlist(int orderLineID){
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT aantal FROM orderlines WHERE orderline_id="+orderLineID);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public double getGewicht(int itemID){
+        double x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT gewicht_in_kg FROM items WHERE item_id="+itemID);
+
+            while(rs.next()) {
+                x = rs.getInt(1);
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
 }
