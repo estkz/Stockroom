@@ -5,11 +5,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 public class BekijkPakbonnen extends JDialog {
+    Database db = new Database();
     JFrame parentFrame;
+
+    // Functions
+    void GetOrderContent() {
+        // Get all the information for each order (Order ID, ClientName, Amount of products, Products in order, Date)
+
+    }
 
     // Vars
     String packingSlipTitle = "Pakbon ";
     String clientName = "Tom Prachtig ";
+    int orderAmount = db.getAantalOrders();
 
     int orderID = 1;
 
@@ -29,7 +37,8 @@ public class BekijkPakbonnen extends JDialog {
         setResizable(false);
 
         // Components
-        JLabel lPpackingSlipNumber = new JLabel("420");
+        JComboBox selectOrder = new JComboBox();
+        JLabel lPackingSlipNumber = new JLabel("420");
         JLabel lOrderID = new JLabel("Order ID: " + orderID);
         JLabel lKlantNaam = new JLabel("Naam: " + clientName);
         JLabel lDate = new JLabel("Datum: " + dtf.format(current));
@@ -40,6 +49,11 @@ public class BekijkPakbonnen extends JDialog {
         panel.add(titlePackingSlip, BorderLayout.CENTER);
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(titlePackingSlip);
+        topPanel.add(selectOrder);
+
+        for(int i = 0; i < orderAmount; i++){
+            selectOrder.addItem(db.getOrderID(i)); // Request orders & place all in the Combobox 'selectOrder'
+        }
 
         // Main Panel
         JPanel mainPanel = new JPanel(new BorderLayout());
