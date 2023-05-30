@@ -77,9 +77,10 @@ public class TSP {
     }
 
     public static int[][] route26(int[][] splicedRoute, int[] coordinates){
-        int[][] finalRoute = new int[splicedRoute.length][(coordinates.length/splicedRoute.length)+2];
+        int[][] finalRoute = new int[splicedRoute.length][];
 
         for (int i = 0; i < splicedRoute.length; i++) {
+            finalRoute[i] = new int[splicedRoute[i].length+2];
             System.arraycopy(splicedRoute[i], 0, finalRoute[i], 1, splicedRoute[i].length);
 
             finalRoute[i][0] = 26;

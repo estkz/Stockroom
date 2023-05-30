@@ -270,11 +270,9 @@ public class Database {
 
                         if (orderID == i) {
                             for (int m = 0; m < plek.length; m++) {
-                                if(plek[m] != 0) {
-                                    return new ArrayList<>();
-                                } else {
-                                    arr.add(plek[m]);
-                                }
+                                    if(!arr.contains(plek[m])) {
+                                        arr.add(plek[m]);
+                                    }
                             }
                         }
                     }
@@ -370,7 +368,7 @@ public class Database {
             ResultSet rs = stmt.executeQuery("SELECT * FROM orderlines WHERE order_id=" + orderID);
 
             while (rs.next()) {
-
+                boodschap = new ArrayList<>();
                 boodschap.add(rs.getInt(2)); //order id
                 boodschap.add(rs.getInt(3)); //item id
                 boodschap.add(rs.getInt(4)); //aantal

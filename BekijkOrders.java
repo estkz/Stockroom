@@ -128,6 +128,7 @@ public class BekijkOrders extends JDialog {
                     coordinates = TSP.TSPAlgorithm(arr);
                     System.out.println(Arrays.deepToString(coordinates));
                 } else {
+                    System.out.println("sorry not complete");
                     return;
                 }
 
