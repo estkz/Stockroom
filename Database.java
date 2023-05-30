@@ -23,6 +23,31 @@ public class Database {
         return x;
     }
 
+    public String getDBString(String tabel, String returnColomn, String condition) {
+        String returnValue;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nerdygadgets_robotarm", "root", "");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tabel + " WHERE " + condition);
+
+            if(!rs.next()){
+                con.close();
+                stmt.close();
+                return null;
+            }
+
+            returnValue = rs.getString(returnColomn);
+            con.close();
+            return returnValue;
+        } catch(Exception e){
+            System.out.println(e);
+            System.out.println(info[1]);
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public String[] getItems(){
         String[] x = new String[getAantalItems()+1];
 
