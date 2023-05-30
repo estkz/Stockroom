@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import Serial.SimpleSerial;
 
 public class Main {
     public static void main(String[] args) {
         Voorraad.getDatabasePlekken();
-        new Frame();
+        SimpleSerial Serial = new SimpleSerial();
+        Serial.setup();
+        new Frame(Serial);
 
-
-//        Database db = new Database();
-//        ArrayList<Integer> arr = db.getItemArrayList(4);
-//        System.out.println(Arrays.deepToString(TSP.TSPAlgorithm(arr)));
     }
 }

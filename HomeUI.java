@@ -1,3 +1,5 @@
+import Serial.SimpleSerial;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,7 @@ public class HomeUI extends JPanel implements ActionListener {
 
     JButton bekijkOrders = new JButton("Bekijk orders");
     JButton bekijkPakbonnen = new JButton("Bekijk pakbonnen");
-
+    JButton veranderPlek = new JButton("Verander plek");
 
     JComboBox<String> item = new JComboBox<>();
     JComboBox<Integer> plek = new JComboBox<>();
@@ -25,9 +27,12 @@ public class HomeUI extends JPanel implements ActionListener {
     JButton voorraadAanpassen = new JButton("Voorraad toevoegen");
     JButton voorraadVerwijderen = new JButton("Voorraad verwijderen");
 
+    SimpleSerial Serial;
 
-    HomeUI(JFrame parentFrame){
+
+    HomeUI(JFrame parentFrame, SimpleSerial Serial){
         this.parentFrame = parentFrame;
+        this.Serial = Serial;
 
         setBounds(420,0,200,400);
         setBackground(Color.lightGray);
@@ -41,7 +46,6 @@ public class HomeUI extends JPanel implements ActionListener {
         for(int i=1; i<=25; i++){
             plek.addItem(i);
         }
-
 
         buttonPanel1.setLayout(new GridLayout(3,2));
 
@@ -67,12 +71,13 @@ public class HomeUI extends JPanel implements ActionListener {
         buttonPanel2.add(bekijkOrders);
         buttonPanel2.add(bekijkPakbonnen);
         buttonPanel2.add(bekijkWachtrij);
+        buttonPanel2.add(veranderPlek);
 
         add(buttonPanel1);
         add(buttonPanel2);
 
         bekijkOrders.addActionListener(e -> {
-            new BekijkOrders(parentFrame, true);
+            new BekijkOrders(parentFrame, true, Serial);
         });
 
         bekijkPakbonnen.addActionListener(e -> {
@@ -83,6 +88,10 @@ public class HomeUI extends JPanel implements ActionListener {
             new BekijkWachtrij(parentFrame, true);
         });
 
+
+        veranderPlek.addActionListener(e -> {
+            new VeranderPlek(parentFrame, true, Serial);
+        });
 
 
     }
