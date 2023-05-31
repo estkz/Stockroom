@@ -113,9 +113,32 @@ public class HomeUI extends JPanel implements ActionListener {
             if (plekVar != 0 && itemVar != 0) {
                 res = db.setItems(plekVar, itemVar);
             }
+
+            boolean placed = false;
+            if(res){
+                Serial.grid(26);
+                int options = JOptionPane.showConfirmDialog(this,"is packet placed?");
+                if(options == 0){
+
+                    if(!Serial.grid(26)){return;}
+                    Serial.delay(100);
+                    if(!Serial.grid(plekVar)){return;}
+                    Serial.delay(300);
+                    if(!Serial.packet("place",3)){return;}
+                    Serial.delay(250);
+                    if(!Serial.packet("dump")){return;}
+                    Serial.delay(100);
+                    if(!Serial.grid(26)){return;}
+                    Serial.delay(100);
+                    placed = true;
+                }
+            }
+
+
+
             VoorraadPanel.drawVoorraad();
 
-            if (res) {
+            if (res && placed) {
                 JOptionPane.showMessageDialog(parentFrame, "Voorraad toegevoegd!");
             } else {
                 JOptionPane.showMessageDialog(parentFrame, "ERROR", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
@@ -138,7 +161,7 @@ public class HomeUI extends JPanel implements ActionListener {
             }
 
             try {
-                int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u item " + item.getSelectedItem() + " wilt verwijderen van plek " + plek.getSelectedItem() + "?", "Confirm", JOptionPane.YES_NO_OPTION);
+                int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u het item op plek " + plek.getSelectedItem() + " wilt verwijderen ?", "Confirm", JOptionPane.YES_NO_OPTION);
                 System.out.println(input);
 
                 if (input == 0) {
@@ -146,7 +169,23 @@ public class HomeUI extends JPanel implements ActionListener {
                     VoorraadPanel.drawVoorraad();
 
 
-                    if (res) {
+                    boolean picked = false;
+                    if(res){
+                        if(!Serial.packet("dump")){return;}
+                        Serial.delay(100);
+                        if(!Serial.grid(plekVar)){return;}
+                        Serial.delay(100);
+                        if(!Serial.packet("pick",3)){return;}
+                        Serial.delay(100);
+                        if(!Serial.packet("dump")){return;}
+                        Serial.delay(100);
+                        if(!Serial.grid(26)){return;}
+                        Serial.delay(100);
+                        picked = true;
+                    }
+
+
+                    if (res && picked) {
                         JOptionPane.showMessageDialog(parentFrame, "Voorraad verwijderd!");
                     } else {
                         JOptionPane.showMessageDialog(parentFrame, "ERROR, voorraad niet verwijderd", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
