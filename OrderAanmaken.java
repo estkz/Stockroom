@@ -49,13 +49,16 @@ import java.awt.event.ActionListener;
                       int IDint = Integer.parseInt(ID);
 
                       if (IDint == TestID) {
-                          System.out.println("Je ingediende ID is als bestaand.");
+                          JOptionPane.showMessageDialog(null, "Je ingediende ID is als bestaand.", "Error",JOptionPane.ERROR_MESSAGE);
                       } else if (IDint > 0) {
-                          System.out.println("Het ID is toegevoegd.");
+                          JOptionPane.showMessageDialog(null, "Het ID is toegevoegd.", "", JOptionPane.QUESTION_MESSAGE);
+                      } else {
+                          JOptionPane.showMessageDialog(null, "Je hebt geen geldig ID opgegeven probeer het opnieuw","Error", JOptionPane.ERROR_MESSAGE);
                       }
                   }
               }  catch (Exception e) {
-                  System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
+                  JOptionPane.showMessageDialog(null, "Je hebt geen geldig ID opgegeven probeer het opnieuw","Error", JOptionPane.ERROR_MESSAGE);
+
               }
             }
           }
