@@ -182,10 +182,10 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM orderlines WHERE orderline_id="+orderline);
+            ResultSet rs = stmt.executeQuery("SELECT item_id FROM orderlines WHERE orderline_id="+orderline);
 
             while(rs.next()) {
-                x = rs.getInt(3);
+                x = rs.getInt(1);
             }
 
             con.close();

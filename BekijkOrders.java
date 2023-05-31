@@ -61,25 +61,40 @@ public class BekijkOrders extends JDialog {
     }
 
     public boolean orderUitvoerbaar(int orderID) {
-        ArrayList<ArrayList<Integer>> orderlines = db.getOrderLines(orderID);
+        System.out.println("Order id");
+        System.out.println(orderID);
+        ArrayList<Integer> orderlines = db.getOrderLines(orderID).get(0);
         HashMap<Integer, Integer> schapCopy = db.getAllProducts();
 
-        for (int i = 0; i < orderlines.size(); i++) {
-            for (int j = 0; j < orderlines.get(i).size(); j++) {
-                int itemID = orderlines.get(i).get(j);
+        System.out.println("orderlines");
+        System.out.println(orderlines.toString());
+        System.out.println("schapcopy");
+        System.out.println(schapCopy);
+        System.out.println();
 
-                if(!schapCopy.containsKey(itemID)){
+
+//        for (int i = 0; i < orderlines.size(); i++) {
+            for (int j = 0; j < orderlines.size(); j++) {
+                int orderline = orderlines.get(j);
+                System.out.println("orderline");
+                System.out.println(orderline);
+                int itemID = db.getItemIDFromOrderline(orderline)+1;
+
+                System.out.println("Item id");
+                System.out.println(itemID);
+
+                if (!schapCopy.containsKey(itemID)) {
                     return false;
                 }
 
-                if(schapCopy.get(itemID) > 0){
-                    schapCopy.put(itemID, schapCopy.get(itemID)-1);
+                if (schapCopy.get(itemID) > 0) {
+                    schapCopy.put(itemID, schapCopy.get(itemID) - 1);
                 } else {
                     return false;
-                }
 
+                }
             }
-        }
+//        }
         return true;
     }
 
@@ -116,12 +131,9 @@ public class BekijkOrders extends JDialog {
         executeOrder.addActionListener(e -> {
             if(orderCombo.getSelectedItem() != null) {
                 if(!orderUitvoerbaar((int) orderCombo.getSelectedItem())){
-                    System.out.println("sorry, products not in warehouse");
+                    JOptionPane.showMessageDialog(parentFrame, "Item niet in het schap", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                Serial.grid(26);
-
 
                 ArrayList<Integer> arr = db.getItemArrayList((int) orderCombo.getSelectedItem());
                 int[][] coordinates;
@@ -129,9 +141,12 @@ public class BekijkOrders extends JDialog {
                     coordinates = TSP.TSPAlgorithm(arr);
                     System.out.println(Arrays.deepToString(coordinates));
                 } else {
-                    System.out.println("sorry not complete");
+                    JOptionPane.showMessageDialog(parentFrame, "Niet genoeg items in het schap", "INANE ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
+
+                Serial.grid(26);
 
                 int pickCount = 3;
                 boolean res;

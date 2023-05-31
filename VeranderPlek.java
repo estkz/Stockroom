@@ -65,14 +65,18 @@ public class VeranderPlek extends JDialog {
 
     public int ophalen(){
         String s = Objects.requireNonNull(items.getSelectedItem()).toString();
-        int divider = 0;
+        int divider1 = 0;
+        int divider2 = 0;
         for (int i = 0; i < s.length(); i++) {
             if(s.charAt(i) == ':'){
-                divider = i;
+                divider1 = i+1;
+            }
+            if(s.charAt(i) == '|'){
+                divider2 = i-1;
                 break;
             }
         }
-        return db.getPlekFromItemID(Integer.parseInt(items.getSelectedItem().toString().substring(0, divider)),1)[0];
+        return Integer.parseInt(items.getSelectedItem().toString().substring(divider1, divider2));
     }
 
     public int wegbrengen(){
@@ -96,7 +100,7 @@ public class VeranderPlek extends JDialog {
             if(plekken[i] > 0) {
                 int itemID = plekken[i];
                 String itemName = db.getItems()[itemID-1];
-                items.addItem(itemID+": "+itemName + " || plek: " + (i+1));
+                items.addItem("plek:" + (i+1) + " || item_id: " + itemID+" "+itemName);
             }
         }
         for (int i = 0; i < plekken.length; i++) {
