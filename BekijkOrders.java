@@ -94,7 +94,9 @@ public class BekijkOrders extends JDialog {
         add(orderList);
         add(newOrder);
         add(executeOrder);
-
+        newOrder.addActionListener(e -> {
+            new OrderAanmaken(parentFrame, true);
+        });
         orderList.setPreferredSize(new Dimension(550,400));
         orderList.setLayout(new GridLayout(5,2));
         orderList.setBorder(BorderFactory.createLineBorder(Color.black));

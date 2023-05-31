@@ -1,56 +1,61 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
-
-public class OrderAanmaken extends JDialog{
-    Database db = new Database();
-    JFrame parentFrame;
-    JButton addItem = new JButton("Item toevoegen");
-    JButton removeItem = new JButton("Item verwijderen");
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-    OrderAanmaken(JFrame f, boolean m){
-        super(f, m);
-        this.parentFrame = f;
+  public class OrderAanmaken extends JDialog implements ActionListener {
+      Database db = new Database();
+      JFrame parentFrame;
+      int TestID = 13;
 
-        setSize(new Dimension(600,600));
-        setLayout(new FlowLayout());
-        setResizable(false);
+      JButton addID;
+      JTextField IDtext;
 
-        DefaultListModel<String> demoList = new DefaultListModel<>();
-        JList<String> list = new JList<>(demoList);
-        list.setPreferredSize(new Dimension(500,400));
+      OrderAanmaken(JFrame f, boolean m) {
+          super(f, m);
+          this.parentFrame = f;
+          IDtext = new JTextField("");
+          addID = new JButton("OrderID indienen");
+          addID.addActionListener(this);
 
+          JButton addItem = new JButton("Item toevoegen");
+          JButton removeItem = new JButton("Item verwijderen");
 
-        JComboBox<Integer> comboBox = new JComboBox<>();
-        for(int i = 0; i< db.getItems().length; i++){
-//            if(db.getItems()[i] != 0) {
-//                comboBox.addItem(db.getItems()[i]);
-//            }
-        }
-        comboBox.setPreferredSize(new Dimension(150,21));
+          setSize(new Dimension(600, 600));
+          setLayout(new FlowLayout());
+          setResizable(false);
 
+          DefaultListModel<String> demoList = new DefaultListModel<>();
+          JList<String> list = new JList<>(demoList);
+          list.setPreferredSize(new Dimension(500, 400));
 
-        addItem.addActionListener(e -> {
-            demoList.addElement(Objects.requireNonNull(comboBox.getSelectedItem()).toString());
-            comboBox.removeItem(comboBox.getSelectedItem());
-        });
-        addItem.setPreferredSize(new Dimension(150,20));
+          IDtext.setPreferredSize(new Dimension(30, 30));
 
+          this.add(IDtext);
+          this.add(addID);
 
-        removeItem.addActionListener(e -> {
-            comboBox.addItem(Integer.parseInt(list.getSelectedValue()));
-            demoList.remove(list.getSelectedIndex());
-        });
-        addItem.setPreferredSize(new Dimension(150, 20));
+          setLocationRelativeTo(null);
+          setVisible(true);
 
+      }
 
-        add(comboBox);
-        add(addItem);
-        add(list);
-        add(removeItem);
-
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-}
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          if (e.getSource() == addID) {
+              String ID = (String)IDtext.getText();
+              int IDint = Integer.parseInt(ID);
+        try {
+                if (IDint == TestID) {
+                System.out.println("Je ingediende ID is als bestaand.");
+                } else if (IDint > 0) {
+                System.out.println("Het ID is toegevoegd.");
+                } else {
+                System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
+                }
+            }  catch (ArithmeticException er) {
+            System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
+            }
+          }
+      }
+  }
