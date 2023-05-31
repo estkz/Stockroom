@@ -116,6 +116,7 @@ public class BekijkOrders extends JDialog {
         executeOrder.addActionListener(e -> {
             if(orderCombo.getSelectedItem() != null) {
                 if(!orderUitvoerbaar((int) orderCombo.getSelectedItem())){
+                    System.out.println("sorry, products not in warehouse");
                     return;
                 }
 
