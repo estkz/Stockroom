@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `orderlines` (
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` int(11) NOT NULL,
+  `voltooid` int(1) NOT NULL,
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -21,7 +22,7 @@ DROP TABLE IF EXISTS `items`;
 CREATE TABLE IF NOT EXISTS `items` (
   `item_id` int(11) NOT NULL,
   `item_naam` varchar(25),
-  `gewicht_in_kg` float(24), 
+  `gewicht_in_kg` float(24),
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -45,24 +46,34 @@ VALUES (4, 2),
 		(18, 6),
         (1, 3);
 
-INSERT INTO orders (order_id)
-VALUES (1),
-		(2),
-		(3),
-		(4);
+INSERT INTO orders (order_id, voltooid)
+VALUES (1,0),
+		(2,0),
+		(3,0),
+		(4,0);
 
 INSERT INTO orderlines(orderline_id, order_id, item_id, aantal)
 VALUES (1, 1, 4, 1),
-		(2, 1, 2, 3),
-		(3, 2, 1, 5),
+		(2, 1, 2, 2),
+		(3, 2, 1, 1),
 		(4, 2, 6, 2),
 		(5, 3, 2, 1),
-		(6, 4, 6, 5),
-		(7, 4, 2, 3),
-		(8, 4, 1, 4),
+		(6, 4, 6, 2),
+		(7, 4, 2, 1),
+		(8, 4, 1, 3),
 		(9, 4, 4, 1),
 		(10, 4, 5, 2),
-		(11, 4, 3, 5);
-		
+		(11, 4, 3, 1);
+
 
 DELETE FROM schap;
+INSERT INTO schap(plek, item_id)
+VALUES (1, 4),
+		(5, 1),
+		(18, 1),
+		(2, 5),
+		(3, 6),
+		(20, 6),
+		(11, 2),
+		(15, 3),
+		(16, 2);

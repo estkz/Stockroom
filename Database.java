@@ -1,6 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class Database {
 
@@ -99,7 +99,7 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT order_id FROM orders WHERE order_id = "+order_id);
+            ResultSet rs = stmt.executeQuery("SELECT order_id FROM orders WHERE order_id = "+order_id+" AND voltooid=0");
 
             while(rs.next()) {
                 x = rs.getInt(1);
@@ -139,7 +139,7 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM orders");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orders WHERE voltooid = 0");
             while(rs.next()) {
                 x++;
             }
@@ -150,16 +150,42 @@ public class Database {
         return x;
     }
 
+    public int[] getAllOrders() {
+        ArrayList<Integer> x = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orders WHERE voltooid = 0");
+
+            while(rs.next()) {
+                x.add(rs.getInt(1));
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+
+        int[] xArr = new int[x.size()];
+
+        for (int i = 0; i < x.size(); i++) {
+            xArr[i]= x.get(i);
+        }
+        return xArr;
+    }
+
     public int getItemIDFromOrderline(int orderline){
         int x = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM orderlines WHERE orderline_id="+orderline);
+            ResultSet rs = stmt.executeQuery("SELECT item_id FROM orderlines WHERE orderline_id="+orderline);
 
             while(rs.next()) {
-                x = rs.getInt(3);
+                x = rs.getInt(1);
             }
 
             con.close();
@@ -169,13 +195,43 @@ public class Database {
         return x-1;
     }
 
-    public int getPlekFromItemID(int itemID){
-        int x = 0;
+    public int[] getPlekFromItemID(int itemID, int aantal){
+        int[] x = new int[aantal];
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT plek FROM schap WHERE item_id="+itemID);
+
+            int max = 0;
+            int i = 0;
+            while(rs.next()) {
+                if (i < aantal) {
+                    x[i] = rs.getInt(1);
+                }
+                i++;
+            }
+
+            if (aantal > i) {
+                con.close();
+                return new int[0];
+            }
+
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public int getItemIDFromPlek(int plek){
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT item_id FROM schap WHERE plek="+plek);
 
             while(rs.next()) {
                 x = rs.getInt(1);
@@ -191,16 +247,34 @@ public class Database {
     public ArrayList<Integer> getItemArrayList(int orderID){
         ArrayList<Integer> items;
         ArrayList<Integer> arr = new ArrayList<>();
+        HashMap<Integer, Integer> schap = getAllProducts();
 
         for(int i=1; i<= getAantalOrders(); i++){
             for(int j=0; j<getOrderLines(i).size(); j++) {
                 for (int k=0; k<getOrderLines(i).get(j).size(); k++) {
-                    int orderlineVar = getOrderLines(i).get(j).get(k);
-                    int itemID = getItemIDFromOrderline(orderlineVar)+1;
-                    int plek = getPlekFromItemID(itemID);
+                    HashMap<Integer, ArrayList<Integer>> boodschappen = getAllItems(orderID);
 
-                    if(orderID == i) {
-                       arr.add(plek);
+//                    int orderlineVar = getOrderLines(i).get(j).get(k);
+//                    int itemID = getItemIDFromOrderline(orderlineVar) + 1;
+
+                    for(int l : boodschappen.keySet()){
+                        int itemID = boodschappen.get(l).get(1);
+                        int aantal = boodschappen.get(l).get(2);
+                        boodschappen.get(l);
+
+
+                        int[] plek = getPlekFromItemID(itemID, aantal);
+                        if(plek.length < aantal){
+                            return new ArrayList<>();
+                        }
+
+                        if (orderID == i) {
+                            for (int m = 0; m < plek.length; m++) {
+                                    if(!arr.contains(plek[m])) {
+                                        arr.add(plek[m]);
+                                    }
+                            }
+                        }
                     }
                 }
             }
@@ -228,22 +302,84 @@ public class Database {
         return x;
     }
 
-    public double getGewicht(int itemID){
+    public double getGewicht(int itemID) {
         double x = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT gewicht_in_kg FROM items WHERE item_id="+itemID);
+            ResultSet rs = stmt.executeQuery("SELECT gewicht_in_kg FROM items WHERE item_id=" + itemID);
 
-            while(rs.next()) {
+            while (rs.next()) {
                 x = rs.getInt(1);
             }
 
             con.close();
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return x;
+    }
+
+    public void setOrderVoltooid(int orderID){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("UPDATE orders SET voltooid = 1 WHERE order_id = "+orderID);
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public HashMap<Integer, Integer> getAllProducts(){
+        HashMap<Integer, Integer> schappen = new HashMap<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM schap");
+
+            while (rs.next()) {
+                int itemID = rs.getInt(2);
+
+                if(schappen.containsKey(itemID)) {
+                    schappen.put(itemID, schappen.get(itemID)+1);
+                } else {
+                    schappen.put(itemID, 1);
+                }
+
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return schappen;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> getAllItems(int orderID){
+        HashMap<Integer, ArrayList<Integer>> boodschappen = new HashMap<>();
+        ArrayList<Integer> boodschap = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderlines WHERE order_id=" + orderID);
+
+            while (rs.next()) {
+                boodschap = new ArrayList<>();
+                boodschap.add(rs.getInt(2)); //order id
+                boodschap.add(rs.getInt(3)); //item id
+                boodschap.add(rs.getInt(4)); //aantal
+
+                boodschappen.put(rs.getInt(1), boodschap);//key = orderline id
+            }
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return boodschappen;
     }
 }
