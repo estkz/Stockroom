@@ -1,9 +1,11 @@
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class BekijkPakbonnen extends JDialog {
     Database db = new Database();
@@ -12,14 +14,28 @@ public class BekijkPakbonnen extends JDialog {
 
     // Functions
     void GetOrderContent(int orderID) {
-        // Get all the information for the selected order (Order ID, ClientName, Amount of products, Products in order, Date)
         System.out.println("Order ID: " + orderID);
         Order order = new Order(orderID);
+
+        // getItemIDFromOrderline | I need to fix this, so it actually displays it on the pakbon.
+        ArrayList<ArrayList<Integer>> orderLines = db.getOrderLines(orderID);
+        for(int i = 0; i < orderLines.get(0).size(); i++) {
+            int itemID = db.getItemIDFromOrderline(orderLines.get(0).get(i))+1;
+            String itemsInOrder = db.getItems()[itemID];
+            JLabel lItemsInOrder = new JLabel("Products: " + itemsInOrder);
+            System.out.println("id: " + itemID);
+        }
+
+
+
 
         // Update the corresponding labels with the retrieved order information
         lOrderID.setText("Order ID: " + orderID);
         lKlantNaam.setText("Naam: " + order.getCustomerName());
         lDate.setText("Datum: " + dtf.format(current));
+        amountOfItems.setText("Aantal producten: "+db.getAantalItemsFromOrderID(orderID));
+
+
     }
 
     // Vars
@@ -32,6 +48,7 @@ public class BekijkPakbonnen extends JDialog {
 
     // Components
     JComboBox<Integer> selectOrder;
+    JButton printPakbon = new JButton("print");
 
     // Labels
     JLabel company = new JLabel("Nerdygadgets");
@@ -43,6 +60,7 @@ public class BekijkPakbonnen extends JDialog {
     JLabel lKlantNaam;
     JLabel lDate;
     JLabel titlePackingSlip;
+    JLabel amountOfItems = new JLabel("");
 
     // Paint Bekijk Pakbonnen Dialog
     BekijkPakbonnen(JFrame frame, boolean m){
@@ -69,9 +87,11 @@ public class BekijkPakbonnen extends JDialog {
         topPanel.add(titlePackingSlip);
         topPanel.add(selectOrder);
 
-        for(int i = 1; i <= orderAmount; i++){
-            selectOrder.addItem(i); // Add order IDs to the combobox
+        ArrayList<Integer> comboOrderID = db.getAllOrderIDs();
+        for (int orderID : comboOrderID) {
+            selectOrder.addItem(orderID); // Add order ID to the combobox
         }
+
 
         // Add action listener to the combobox
         selectOrder.addActionListener(new ActionListener() {
@@ -83,6 +103,8 @@ public class BekijkPakbonnen extends JDialog {
         });
 
         selectOrder.setSelectedIndex(0);
+
+
 
         // Main Panel
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -103,6 +125,9 @@ public class BekijkPakbonnen extends JDialog {
         leftPanel.add(lOrderID);
         leftPanel.add(lKlantNaam);
         leftPanel.add(lDate);
+        leftPanel.add(amountOfItems);
+        //leftPanel.add(lItemsInOrder);
+        leftPanel.add(printPakbon);
         mainPanel.add(leftPanel, BorderLayout.WEST);
 
         setLocationRelativeTo(null);
