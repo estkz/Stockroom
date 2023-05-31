@@ -41,21 +41,22 @@ import java.awt.event.ActionListener;
       }
 
       @Override
-      public void actionPerformed(ActionEvent e) {
-          if (e.getSource() == addID) {
-              String ID = (String)IDtext.getText();
-              int IDint = Integer.parseInt(ID);
-        try {
-                if (IDint == TestID) {
-                System.out.println("Je ingediende ID is als bestaand.");
-                } else if (IDint > 0) {
-                System.out.println("Het ID is toegevoegd.");
-                } else {
-                System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
-                }
-            }  catch (ArithmeticException er) {
-            System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
+      public void actionPerformed(ActionEvent er) {
+
+              try {
+                  if (er.getSource() == addID) {
+                      String ID = (String) IDtext.getText();
+                      int IDint = Integer.parseInt(ID);
+
+                      if (IDint == TestID) {
+                          System.out.println("Je ingediende ID is als bestaand.");
+                      } else if (IDint > 0) {
+                          System.out.println("Het ID is toegevoegd.");
+                      }
+                  }
+              }  catch (Exception e) {
+                  System.out.println("Je hebt geen geldig ID opgegeven probeer het opnieuw");
+              }
             }
           }
-      }
-  }
+
