@@ -6,14 +6,13 @@ public class Order {
 
     private final String customerName;
     // private String[] itemIDs;
-    private String deliveryAddress;
+    private final String deliveryAddress;
 
     Database db = new Database();
 
     public Order(int orderID) {
         this.orderID = orderID;
         customerName = db.getDBString("orders", "CustomerName", "order_id = " + orderID);
-
         deliveryAddress = db.getDBString("orders", "Adress", "order_id = " + orderID);
         System.out.println(customerName);
         System.out.println(deliveryAddress);
@@ -21,5 +20,8 @@ public class Order {
 
     public String getCustomerName(){
         return this.customerName;
+    }
+    public String getDeliveryAddress(){
+        return this.deliveryAddress;
     }
 }

@@ -12,6 +12,7 @@ public class BekijkPakbonnen extends JDialog {
     JFrame parentFrame;
     JLabel lblSpacing = new JLabel(" ");
 
+
     // Functions
     void GetOrderContent(int orderID) {
         System.out.println("Order ID: " + orderID);
@@ -32,6 +33,7 @@ public class BekijkPakbonnen extends JDialog {
         // Update the corresponding labels with the retrieved order information
         lOrderID.setText("Order ID: " + orderID);
         lKlantNaam.setText("Naam: " + order.getCustomerName());
+        lDeliveryAddress.setText("Adres: " + order.getDeliveryAddress());
         lDate.setText("Datum: " + dtf.format(current));
         amountOfItems.setText("Aantal producten: "+db.getAantalItemsFromOrderID(orderID));
 
@@ -58,6 +60,7 @@ public class BekijkPakbonnen extends JDialog {
 
     JLabel lOrderID;
     JLabel lKlantNaam;
+    JLabel lDeliveryAddress = new JLabel(" ");
     JLabel lDate;
     JLabel titlePackingSlip;
     JLabel amountOfItems = new JLabel("");
@@ -124,6 +127,7 @@ public class BekijkPakbonnen extends JDialog {
         // Left Panel | Client Information
         leftPanel.add(lOrderID);
         leftPanel.add(lKlantNaam);
+        leftPanel.add(lDeliveryAddress);
         leftPanel.add(lDate);
         leftPanel.add(amountOfItems);
         //leftPanel.add(lItemsInOrder);
