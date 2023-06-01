@@ -66,7 +66,7 @@ public class Database {
         String returnValue;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/nerdygadgets_robotarm", "root", "");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tabel + " WHERE " + condition);
 
