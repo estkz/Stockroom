@@ -83,7 +83,7 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("DELETE FROM schap WHERE item_id="+a+" AND plek="+b);
+            stmt.executeUpdate("DELETE FROM schap WHERE plek="+b);
             con.close();
 
             return true;
