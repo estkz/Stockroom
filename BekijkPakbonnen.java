@@ -12,7 +12,6 @@ public class BekijkPakbonnen extends JDialog {
     JFrame parentFrame;
     JLabel lblSpacing = new JLabel(" ");
 
-
     // Functions
     void GetOrderContent(int orderID) {
         System.out.println("Order ID: " + orderID);
@@ -27,17 +26,12 @@ public class BekijkPakbonnen extends JDialog {
             System.out.println("id: " + itemID);
         }
 
-
-
-
         // Update the corresponding labels with the retrieved order information
         lOrderID.setText("Order ID: " + orderID);
         lKlantNaam.setText("Naam: " + order.getCustomerName());
         lDeliveryAddress.setText("Adres: " + order.getDeliveryAddress());
         lDate.setText("Datum: " + dtf.format(current));
         amountOfItems.setText("Aantal producten: "+db.getAantalItemsFromOrderID(orderID));
-
-
     }
 
     // Vars
@@ -95,7 +89,6 @@ public class BekijkPakbonnen extends JDialog {
             selectOrder.addItem(orderID); // Add order ID to the combobox
         }
 
-
         // Add action listener to the combobox
         selectOrder.addActionListener(new ActionListener() {
             @Override
@@ -106,8 +99,6 @@ public class BekijkPakbonnen extends JDialog {
         });
 
         selectOrder.setSelectedIndex(0);
-
-
 
         // Main Panel
         JPanel mainPanel = new JPanel(new BorderLayout());

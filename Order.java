@@ -3,9 +3,7 @@ import java.util.List;
 
 public class Order {
     private final int orderID;
-
     private final String customerName;
-    // private String[] itemIDs;
     private final String deliveryAddress;
 
     Database db = new Database();
