@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` int(11) NOT NULL,
   `voltooid` int(1) NOT NULL,
+  `CustomerName` varchar(45),
+  `Adress` varchar(45),
   PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -33,13 +35,13 @@ CREATE TABLE IF NOT EXISTS `schap` (
     PRIMARY KEY (`plek`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO items (item_id, item_naam, gewicht_in_kg	)
-VALUES (1, "Furry pak", 10.0),
-		(2, "Game hond", 25.5),
+INSERT INTO items (item_id, item_naam, gewicht_in_kg)
+VALUES (1, "Optimel", 10.0),
+		(2, "Laptop", 25.5),
         (3, "TV", 12.9),
         (4, "Vier (4) euro", 5.12),
-        (5, "JOUW moeder", 40.0),
-        (6, "Ballen", 4.9);
+        (5, "Stekker", 40.0),
+        (6, "USB stick", 4.9);
 
 INSERT INTO schap (item_id, plek)
 VALUES (4, 2),
@@ -47,10 +49,10 @@ VALUES (4, 2),
         (1, 3);
 
 INSERT INTO orders (order_id, voltooid)
-VALUES (1,0),
-		(2,0),
-		(3,0),
-		(4,0);
+VALUES (1,0, "Tom Prachtig", "Pipolaan 69"),
+		(2,0, "Johannes Wiebels", "Nachtegaallaan 6"),
+		(3,0, "Mark Rutte", "Kalverstraat 7"),
+		(4,0, "Peter Griffin", "Bozolaan 6");
 
 INSERT INTO orderlines(orderline_id, order_id, item_id, aantal)
 VALUES (1, 1, 4, 1),

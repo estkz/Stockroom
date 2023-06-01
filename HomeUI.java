@@ -1,5 +1,4 @@
 import Serial.SimpleSerial;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -128,7 +127,7 @@ public class HomeUI extends JPanel implements ActionListener {
         if (e.getSource() == voorraadVerwijderen) {
             int plekVar = 0;
             int itemVar = 0;
-            boolean res = false;
+            boolean res;
 
             try {
                 plekVar = Integer.parseInt(Objects.requireNonNull(plek.getSelectedItem()).toString());
