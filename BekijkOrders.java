@@ -15,6 +15,8 @@ public class BekijkOrders extends JDialog {
     JButton newOrder = new JButton("Nieuwe order");
     JButton executeOrder = new JButton("Order uitvoeren");
 
+    JLabel aantalBins = new JLabel("");
+
     JFrame parentFrame;
 
     JComboBox<Integer> orderCombo = new JComboBox<>();
@@ -26,6 +28,32 @@ public class BekijkOrders extends JDialog {
 
     // Functions
 
+
+    int updateAantalBins(int orderID) {
+        ArrayList<ArrayList<Integer>> orderLines = db.getOrderLines(orderID);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+
+        int total = 0;
+
+        for (int i = 0; i < orderLines.get(0).size(); i++) {
+            int itemID = db.getItemIDFromOrderline(orderLines.get(0).get(i)) + 1;
+            int aantal = db.getAantalFromOrderlist(orderLines.get(0).get(i));
+
+            int gewicht = (int) db.getGewicht(itemID) * aantal;
+            arrayList.add(gewicht);
+            total += aantal;
+        }
+        int[] arr = new int[total];
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            arr[i] = arrayList.get(i);
+        }
+
+        if(total == 0){
+            return 0;
+        }
+        return Binpacking.bestFitDecreasing(arr).size();
+    }
 
     void displayOrdersToCombo() {
         orderCombo.removeAllItems();
@@ -123,6 +151,7 @@ public class BekijkOrders extends JDialog {
                     selected = Integer.parseInt(Objects.requireNonNull(orderCombo.getSelectedItem()).toString());
                 }
                 if(allOrders[i] == selected) {
+                    aantalBins.setText("Aantal bins nodig: "+updateAantalBins(allOrders[i]));
                     displayOrderLinesList(allOrders[i]);
                 }
             }
@@ -202,6 +231,7 @@ public class BekijkOrders extends JDialog {
         add(orderList);
         add(newOrder);
         add(executeOrder);
+        add(aantalBins);
 
         orderList.setPreferredSize(new Dimension(550,400));
         orderList.setLayout(new GridLayout(5,2));

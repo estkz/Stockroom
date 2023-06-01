@@ -1,31 +1,68 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Binpacking {
-    public static void main(String[] args) {
-        // Example of items sorted in decreasing order (by weight in kg)
-        int[] items = {90, 80, 70, 60, 50, 40, 30, 20, 10};
-        int binCapacity = 100;
-        int binCount = bestFitDecreasing(items, binCapacity);
-        System.out.println("Number of bins required: " + binCount);
-    }
 
-    public static int bestFitDecreasing(int[] items, int binCapacity) {
-        List<Integer> bins = new ArrayList<>();
+    public static List<List<Integer>> bestFitDecreasing(int[] items) {
+        int binCapacity = 10;
+        int[] otherBinCapacities = {20, 50, 100};
+
+        // Sorteer de items in aflopende volgorde
+        List<Integer> sortedItems = new ArrayList<>();
         for (int item : items) {
+            sortedItems.add(item);
             int j = 0;
-            // Find best bin where the item can fit in
-            for (j = 0; j < bins.size(); j++) {
-                if (bins.get(j) >= item) {
-                    bins.set(j, bins.get(j) - item);
+            while (item > binCapacity){
+                binCapacity = otherBinCapacities[j];
+                j++;
+            }
+        }
+        Collections.sort(sortedItems, Collections.reverseOrder());
+
+        // Lijst van bakken
+        List<List<Integer>> bins = new ArrayList<>();
+        bins.add(new ArrayList<>()); // Voeg de eerste bak toe
+
+        // Plaats elk item in de eerste beschikbare bak waarin het past
+        for (int item : sortedItems) {
+            boolean placed = false;
+            for (List<Integer> bin : bins) {
+                if (binCapacity - binSum(bin) >= item) {
+                    bin.add(item);
+                    placed = true;
                     break;
                 }
             }
-            // If no bin could fit the item, it will create a new bin.
-            if (j == bins.size()) {
-                bins.add(binCapacity - item);
+            if (!placed) {
+                List<Integer> newBin = new ArrayList<>();
+                newBin.add(item);
+                bins.add(newBin);
             }
         }
-        return bins.size();
+
+        return bins;
+    }
+
+    // Hulpmethode om de som van de items in een bak te berekenen
+    private static int binSum(List<Integer> bin) {
+        int sum = 0;
+        for (int item : bin) {
+            sum += item;
+        }
+        return sum;
+    }
+
+    // Voorbeeldgebruik
+    public static void main(String[] args) {
+        int[] items = {5, 5, 6, 4, 2, 3}; // In kg
+
+
+        List<List<Integer>> bins = bestFitDecreasing(items);
+
+        // Output de resulterende bakken
+        for (int i = 0; i < bins.size(); i++) {
+            System.out.println("Bin " + (i + 1) + ": " + bins.get(i));
+        }
     }
 }

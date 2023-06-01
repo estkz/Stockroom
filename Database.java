@@ -23,6 +23,70 @@ public class Database {
         return x;
     }
 
+    public ArrayList<Integer> getAllOrderIDs() {
+        ArrayList<Integer> orderIDs = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT order_id FROM orders");
+
+            while (rs.next()) {
+                int orderID = rs.getInt("order_id");
+                orderIDs.add(orderID);
+            }
+
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return orderIDs;
+    }
+
+    public int getAantalItemsFromOrderID(int orderID) {
+        int x = 0;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT aantal FROM `orderlines` WHERE order_id = " + orderID);
+            while(rs.next()) {
+                x+=rs.getInt(1);
+            }
+            con.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        return x;
+    }
+
+    public String getDBString(String tabel, String returnColomn, String condition) {
+        String returnValue;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(info[0], info[1], info[2]);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tabel + " WHERE " + condition);
+
+            if(!rs.next()){
+                con.close();
+                stmt.close();
+                return null;
+            }
+
+            returnValue = rs.getString(returnColomn);
+            con.close();
+            return returnValue;
+        } catch(Exception e){
+            System.out.println(e);
+            System.out.println(info[1]);
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public String[] getItems(){
         String[] x = new String[getAantalItems()+1];
 
