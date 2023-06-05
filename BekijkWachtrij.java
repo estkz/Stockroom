@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class BekijkWachtrij extends JDialog {
     JScrollPane wachtrijScrollpane;
@@ -31,7 +30,7 @@ public class BekijkWachtrij extends JDialog {
         JTable itemsTable;
 
         // Table Rows/Columns
-        String data[][]= {
+        String[][] data = {
                 { "1" , "1", "3"},
                 { "2" , "7", "8"},
                 { "3" , "9", "5"},
@@ -46,14 +45,14 @@ public class BekijkWachtrij extends JDialog {
 
         };
 
-        String columnNames[] = { "Plek", "Order ID", "Aantal Items" };
+        String[] columnNames = { "Plek", "Order ID", "Aantal Items" };
 
-        String itemData[][] = {
+        String[][] itemData = {
                 { "1", "Furry Socks" },
                 { "2", "Worstuhbroodje" }
         };
 
-        String itemColumnNames[] = { "Item ID", "Item Beschrijving" };
+        String[] itemColumnNames = { "Item ID", "Item Beschrijving" };
 
         // Assign Rows/Columns To Table & Styling
         wachtrijTable = new JTable(data, columnNames);
