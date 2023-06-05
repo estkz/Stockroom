@@ -20,7 +20,7 @@ public class TSP {
         int[][] splicedRoute;
         splicedRoute = splitArray(route, 3);
 
-        return route26(splicedRoute, coordinates);
+        return route26(splicedRoute);
     }
 
     public static int[] calculateBestRoute(int[] coordinates) {
@@ -76,7 +76,7 @@ public class TSP {
                 .toArray(int[][]::new);
     }
 
-    public static int[][] route26(int[][] splicedRoute, int[] coordinates){
+    public static int[][] route26(int[][] splicedRoute){
         int[][] finalRoute = new int[splicedRoute.length][];
 
         for (int i = 0; i < splicedRoute.length; i++) {

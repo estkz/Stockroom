@@ -18,7 +18,7 @@ public class Binpacking {
                 j++;
             }
         }
-        Collections.sort(sortedItems, Collections.reverseOrder());
+        sortedItems.sort(Collections.reverseOrder());
 
         // Lijst van bakken
         List<List<Integer>> bins = new ArrayList<>();

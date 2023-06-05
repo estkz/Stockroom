@@ -133,8 +133,6 @@ public class HomeUI extends JPanel implements ActionListener {
                 }
             }
 
-
-
             VoorraadPanel.drawVoorraad();
 
             if (res && placed) {
@@ -161,8 +159,6 @@ public class HomeUI extends JPanel implements ActionListener {
 
             try {
                 int input = JOptionPane.showConfirmDialog(parentFrame, "Weet u zeker dat u het item op plek " + plek.getSelectedItem() + " wilt verwijderen ?", "Confirm", JOptionPane.YES_NO_OPTION);
-                System.out.println(input);
-
                 if (input == 0) {
                     res = db.removeItems(itemVar, plekVar);
                     VoorraadPanel.drawVoorraad();

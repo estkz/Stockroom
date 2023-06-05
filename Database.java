@@ -79,6 +79,7 @@ public class Database {
             returnValue = rs.getString(returnColomn);
             con.close();
             return returnValue;
+
         } catch(Exception e){
             System.out.println(e);
             System.out.println(info[1]);

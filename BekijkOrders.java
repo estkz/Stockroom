@@ -9,7 +9,6 @@ public class BekijkOrders extends JDialog {
     Database db = new Database();
 
     // Vars
-    int orderAmount = db.getAantalOrders();
 
     // Components
     JButton newOrder = new JButton("Nieuwe order");
@@ -58,30 +57,30 @@ public class BekijkOrders extends JDialog {
     void displayOrdersToCombo() {
         orderCombo.removeAllItems();
         int[] allOrders = db.getAllOrders();
-        for(int i = 0; i < allOrders.length; i++) {
-            orderCombo.addItem(allOrders[i]);
+        for (int allOrder : allOrders) {
+            orderCombo.addItem(allOrder);
         }
         repaint();
     }
 
     void displayOrderLinesList(int orderID){
         int[] allOrders = db.getAllOrders();
-        for(int i=0; i < allOrders.length; i++){
-            for(int j=0; j<db.getOrderLines(allOrders[i]).size(); j++) {
-                for (int k=0; k<db.getOrderLines(allOrders[i]).get(j).size(); k++) {
+        for (int allOrder : allOrders) {
+            for (int j = 0; j < db.getOrderLines(allOrder).size(); j++) {
+                for (int k = 0; k < db.getOrderLines(allOrder).get(j).size(); k++) {
                     //toegang onderdelen van arraylist
-                    int orderlineVar = db.getOrderLines(allOrders[i]).get(j).get(k);
+                    int orderlineVar = db.getOrderLines(allOrder).get(j).get(k);
 
-                    if(allOrders[i] == orderID) {
+                    if (allOrder == orderID) {
                         int itemID = db.getItemIDFromOrderline(orderlineVar);
                         int aantal = db.getAantalFromOrderlist(orderlineVar);
-                        double gewicht = db.getGewicht(db.getItemIDFromOrderline(orderlineVar)+1);
+                        double gewicht = db.getGewicht(db.getItemIDFromOrderline(orderlineVar) + 1);
 
-                        listModel.addElement("Orderline nr. "+orderlineVar
+                        listModel.addElement("Orderline nr. " + orderlineVar
                                 + "   ||    Item: " + db.getItems()[itemID]
                                 + "   ||    Aantal: " + aantal
-                                + "   ||    Gewicht: " + aantal + "*" + gewicht+" = "
-                                + (gewicht*(float)aantal) + "kg");
+                                + "   ||    Gewicht: " + aantal + "*" + gewicht + " = "
+                                + (gewicht * (float) aantal) + "kg");
                     }
                 }
             }
@@ -102,26 +101,25 @@ public class BekijkOrders extends JDialog {
 
 
 //        for (int i = 0; i < orderlines.size(); i++) {
-            for (int j = 0; j < orderlines.size(); j++) {
-                int orderline = orderlines.get(j);
-                System.out.println("orderline");
-                System.out.println(orderline);
-                int itemID = db.getItemIDFromOrderline(orderline)+1;
+        for (int orderline : orderlines) {
+            System.out.println("orderline");
+            System.out.println(orderline);
+            int itemID = db.getItemIDFromOrderline(orderline) + 1;
 
-                System.out.println("Item id");
-                System.out.println(itemID);
+            System.out.println("Item id");
+            System.out.println(itemID);
 
-                if (!schapCopy.containsKey(itemID)) {
-                    return false;
-                }
-
-                if (schapCopy.get(itemID) > 0) {
-                    schapCopy.put(itemID, schapCopy.get(itemID) - 1);
-                } else {
-                    return false;
-
-                }
+            if (!schapCopy.containsKey(itemID)) {
+                return false;
             }
+
+            if (schapCopy.get(itemID) > 0) {
+                schapCopy.put(itemID, schapCopy.get(itemID) - 1);
+            } else {
+                return false;
+
+            }
+        }
 //        }
         return true;
     }
@@ -145,14 +143,14 @@ public class BekijkOrders extends JDialog {
         orderCombo.addActionListener(e -> {
             listModel.removeAllElements();
             int[] allOrders = db.getAllOrders();
-            for(int i=0; i<allOrders.length; i++) {
+            for (int allOrder : allOrders) {
                 int selected = -1;
-                if(orderCombo.getSelectedItem() != null) {
+                if (orderCombo.getSelectedItem() != null) {
                     selected = Integer.parseInt(Objects.requireNonNull(orderCombo.getSelectedItem()).toString());
                 }
-                if(allOrders[i] == selected) {
-                    aantalBins.setText("Aantal bins nodig: "+updateAantalBins(allOrders[i]));
-                    displayOrderLinesList(allOrders[i]);
+                if (allOrder == selected) {
+                    aantalBins.setText("Aantal bins nodig: " + updateAantalBins(allOrder));
+                    displayOrderLinesList(allOrder);
                 }
             }
         });
@@ -179,17 +177,17 @@ public class BekijkOrders extends JDialog {
 
                 int pickCount = 3;
                 boolean res;
-                for (int i = 0; i < coordinates.length; i++) {
-                    for (int j = 0; j < coordinates[i].length; j++) {
+                for (int[] coordinate : coordinates) {
+                    for (int j = 0; j < coordinate.length; j++) {
                         System.out.println("grid");
-                        System.out.println(coordinates[i][j]);
+                        System.out.println(coordinate[j]);
 
-                        res = Serial.grid(coordinates[i][j]);
+                        res = Serial.grid(coordinate[j]);
                         System.out.println(res);
 
                         Serial.delay(100);
 
-                        if (coordinates[i][j] == 26) {
+                        if (coordinate[j] == 26) {
                             System.out.println("NIET PAKKEN");
                         } else {
                             System.out.println("pick");
@@ -198,13 +196,13 @@ public class BekijkOrders extends JDialog {
                             Serial.packet("pick", pickCount);
                             pickCount -= 1;
 
-                            db.removeItems(db.getItemIDFromPlek(coordinates[i][j]), coordinates[i][j]);
+                            db.removeItems(db.getItemIDFromPlek(coordinate[j]), coordinate[j]);
 
                             Serial.delay(100);
                         }
 
 
-                        if (coordinates[i][j] == 26 && j == coordinates[i].length-1) {
+                        if (coordinate[j] == 26 && j == coordinate.length - 1) {
                             System.out.println("dump");
                             System.out.println("pickcount = 3");
                             pickCount = 3;
