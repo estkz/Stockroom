@@ -26,8 +26,6 @@ public class BekijkOrders extends JDialog {
     SimpleSerial Serial;
 
     // Functions
-
-
     int updateAantalBins(int orderID) {
         ArrayList<ArrayList<Integer>> orderLines = db.getOrderLines(orderID);
         ArrayList<Integer> arrayList = new ArrayList<>();

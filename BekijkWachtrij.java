@@ -2,14 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BekijkWachtrij extends JDialog {
-    JScrollPane wachtrijScrollpane;
-    JScrollPane itemsScrollpane;
-
-    void ResetDialog() {
-        wachtrijScrollpane.setVisible(false);
-        itemsScrollpane.setVisible(true);
-        add(itemsScrollpane);
-    }
 
     JFrame parentFrame;
     BekijkWachtrij(JFrame frame, boolean m) {
@@ -41,8 +33,6 @@ public class BekijkWachtrij extends JDialog {
                 { "8" , "62", "1"},
                 { "9" , "13", "3"},
                 { "10" , "31", "2"}
-
-
         };
 
         String[] columnNames = { "Plek", "Order ID", "Aantal Items" };
@@ -77,7 +67,6 @@ public class BekijkWachtrij extends JDialog {
             pageBack.setVisible(true);
             getContentPane().validate();
             getContentPane().repaint();
-
         });
 
         pageBack.addActionListener(e -> {
@@ -90,9 +79,5 @@ public class BekijkWachtrij extends JDialog {
 
         setLocationRelativeTo(null);
         setVisible(true);
-
-        // [+] Plek   -   [+] orderID   -   [+] aantalItemsInOrder
-        //                                              |
-        //                                               -----> [+] itemID   -   [+] itemType
     }
 }

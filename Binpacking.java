@@ -6,9 +6,9 @@ public class Binpacking {
 
     public static List<List<Integer>> bestFitDecreasing(int[] items) {
         int binCapacity = 10;
-        int[] otherBinCapacities = {20, 50, 100};
+        int[] otherBinCapacities = {20, 50, 100, 200, 500};
 
-        // Sorteer de items in aflopende volgorde
+        // Sort items - Decreasing order
         List<Integer> sortedItems = new ArrayList<>();
         for (int item : items) {
             sortedItems.add(item);
@@ -20,11 +20,11 @@ public class Binpacking {
         }
         sortedItems.sort(Collections.reverseOrder());
 
-        // Lijst van bakken
+        // List of bins
         List<List<Integer>> bins = new ArrayList<>();
-        bins.add(new ArrayList<>()); // Voeg de eerste bak toe
+        bins.add(new ArrayList<>()); // Add first bin
 
-        // Plaats elk item in de eerste beschikbare bak waarin het past
+        // Add each item in the first available/best bin
         for (int item : sortedItems) {
             boolean placed = false;
             for (List<Integer> bin : bins) {
@@ -44,7 +44,7 @@ public class Binpacking {
         return bins;
     }
 
-    // Hulpmethode om de som van de items in een bak te berekenen
+    // Calculate sum of items in bin
     private static int binSum(List<Integer> bin) {
         int sum = 0;
         for (int item : bin) {
@@ -53,10 +53,9 @@ public class Binpacking {
         return sum;
     }
 
-    // Voorbeeldgebruik
+    // Example in console - Used for testing the HMI | (run it as current file for it to work, DO NOT RUN MAIN)
     public static void main(String[] args) {
         int[] items = {5, 5, 6, 4, 2, 3}; // In kg
-
 
         List<List<Integer>> bins = bestFitDecreasing(items);
 

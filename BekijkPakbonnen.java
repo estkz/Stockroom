@@ -1,87 +1,52 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class BekijkPakbonnen extends JDialog {
-    Database db = new Database();
-    JFrame parentFrame;
-    JLabel lblSpacing = new JLabel(" ");
-
-    // Functions
-    void GetOrderContent(int orderID) {
-        System.out.println("Order ID: " + orderID);
-        Order order = new Order(orderID);
-
-        // getItemIDFromOrderline | I need to fix this, so it actually displays it on the pakbon.
-        ArrayList<ArrayList<Integer>> orderLines = db.getOrderLines(orderID);
-        for(int i = 0; i < orderLines.get(0).size(); i++) {
-            int itemID = db.getItemIDFromOrderline(orderLines.get(0).get(i))+1;
-            String itemsInOrder = db.getItems()[itemID];
-            JLabel lItemsInOrder = new JLabel("Products: " + itemsInOrder);
-            System.out.println("id: " + itemID);
-        }
-
-
-
-
-        // Update the corresponding labels with the retrieved order information
-        lOrderID.setText("Order ID: " + orderID);
-        lKlantNaam.setText("Naam: " + order.getCustomerName());
-        lDate.setText("Datum: " + dtf.format(current));
-        amountOfItems.setText("Aantal producten: "+db.getAantalItemsFromOrderID(orderID));
-
-
-    }
-
-    // Vars
-    String packingSlipTitle = "Pakbon ";
-    int orderAmount = db.getAantalOrders();
-
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    LocalDateTime current = LocalDateTime.now();
-    GridBagConstraints gbc = new GridBagConstraints();
+    private Database db = new Database();
+    private JFrame parentFrame;
 
     // Components
-    JComboBox<Integer> selectOrder;
-    JButton printPakbon = new JButton("print");
+    private JList<String> productList = new JList<>();
+    private DefaultListModel<String> productListModel = new DefaultListModel<>();
+    private JComboBox<Integer> selectOrder = new JComboBox<>();
 
-    // Labels
-    JLabel company = new JLabel("Nerdygadgets");
-    JLabel companyStreet = new JLabel("Campus");
-    JLabel zipCode = new JLabel("8017 CA Zwolle");
-    JLabel companyCountry = new JLabel("Nederland");
+    // Company Information
+    private JLabel company = new JLabel("Nerdygadgets");
+    private JLabel companyStreet = new JLabel("Campus");
+    private JLabel zipCode = new JLabel("8017 CA Zwolle");
+    private JLabel companyCountry = new JLabel("Nederland");
 
-    JLabel lOrderID;
-    JLabel lKlantNaam;
-    JLabel lDate;
-    JLabel titlePackingSlip;
-    JLabel amountOfItems = new JLabel("");
+    // Customer Information
+    private JLabel lOrderID = new JLabel("Order ID:");
+    private JLabel lKlantNaam = new JLabel("Naam:");
+    private JLabel lDeliveryAddress = new JLabel(" ");
+    private JLabel lDate = new JLabel("Datum:");
+    private JLabel titlePackingSlip;
+
+    // Binpacking Information
+    private JLabel lAmountOfItems = new JLabel("Aantal bins nodig:");
+    private JLabel lblSpacing = new JLabel(" ");
+
+    // Date and time
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    private LocalDateTime current = LocalDateTime.now();
 
     // Paint Bekijk Pakbonnen Dialog
-    BekijkPakbonnen(JFrame frame, boolean m){
+    public BekijkPakbonnen(JFrame frame, boolean m) {
         super(frame, m);
-        this.parentFrame = frame;
+        parentFrame = frame;
 
         // Dialog Properties
-        setSize(new Dimension(600,600));
+        setSize(600, 600);
         setTitle("Bekijk pakbonnen");
         setResizable(false);
 
-        /* Components */
-        selectOrder = new JComboBox<>();
-
-        lOrderID = new JLabel("Order ID: ");
-        lKlantNaam = new JLabel("Naam: ");
-        lDate = new JLabel("Datum: ");
-        titlePackingSlip = new JLabel(packingSlipTitle);
+        titlePackingSlip = new JLabel("Pakbon (orderID):");
 
         // Top Panel | Pakbon Title Alignment
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(titlePackingSlip, BorderLayout.CENTER);
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(titlePackingSlip);
         topPanel.add(selectOrder);
@@ -91,19 +56,13 @@ public class BekijkPakbonnen extends JDialog {
             selectOrder.addItem(orderID); // Add order ID to the combobox
         }
 
-
         // Add action listener to the combobox
-        selectOrder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedOrderID = (int) selectOrder.getSelectedItem();
-                GetOrderContent(selectedOrderID); // Update the order information based on the selected order ID
-            }
+        selectOrder.addActionListener(e -> {
+            int selectedOrderID = (int) selectOrder.getSelectedItem();
+            GetOrderContent(selectedOrderID); // Update the order information based on the selected order ID
         });
 
         selectOrder.setSelectedIndex(0);
-
-
 
         // Main Panel
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -123,13 +82,68 @@ public class BekijkPakbonnen extends JDialog {
         // Left Panel | Client Information
         leftPanel.add(lOrderID);
         leftPanel.add(lKlantNaam);
+        leftPanel.add(lDeliveryAddress);
         leftPanel.add(lDate);
-        leftPanel.add(amountOfItems);
-        //leftPanel.add(lItemsInOrder);
-        leftPanel.add(printPakbon);
+        leftPanel.add(lAmountOfItems);
+
+        // Right Panel
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setPreferredSize(new Dimension(200, getHeight()));
+
+        // Right Panel | Add Items in bin
+        JLabel binPackingInfo = new JLabel("Items in bin:");
+        rightPanel.add(binPackingInfo, BorderLayout.NORTH);
+
+        // Add more components to the right panel as needed
         mainPanel.add(leftPanel, BorderLayout.WEST);
+        mainPanel.add(rightPanel, BorderLayout.EAST);
+
+        // Bottom Panel
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton printPakbon = new JButton("Print");
+        bottomPanel.add(printPakbon);
+
+        // Print pakbon alert
+        printPakbon.addActionListener(e -> {
+            JOptionPane.showMessageDialog(BekijkPakbonnen.this, "Pakbon wordt geprint!");
+        });
+
+        mainPanel.add(productList, BorderLayout.CENTER);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    // Functions
+    private void GetOrderContent(int orderID) {
+        System.out.println("Order ID: " + orderID);
+        Order order = new Order(orderID);
+
+        // Clear the list when picking new order from combobox
+        productListModel.clear();
+
+        ArrayList<ArrayList<Integer>> orderLines = db.getOrderLines(orderID);
+
+        for (ArrayList<Integer> orderLine : orderLines) {
+            for (int orderLineID : orderLine) {
+                int itemID = db.getItemIDFromOrderline(orderLineID);
+                if (itemID != -1) {
+                    String itemsInOrder = db.getItems()[itemID];
+                    System.out.println("id: " + itemID);
+                    productListModel.addElement(itemsInOrder);
+                }
+            }
+        }
+
+        // Set the DefaultListModel as the model for the JList
+        productList.setModel(productListModel);
+
+        // Update the corresponding labels with the retrieved order information
+        lOrderID.setText("Order ID: " + orderID);
+        lKlantNaam.setText("Naam: " + order.getCustomerName());
+        lDeliveryAddress.setText("Adres: " + order.getDeliveryAddress());
+        lDate.setText("Datum: " + dtf.format(current));
+        lAmountOfItems.setText("Aantal producten: " + db.getAantalItemsFromOrderID(orderID));
     }
 }
